@@ -94,10 +94,10 @@ export function DialogDemo({
                 <h1 className="text-closet font-semibold">180.000đ</h1>
               </div>
               <div className="flex gap-3">
-                <button className="rounded-xl text-sm text-white bg-closet px-5 py-3 font-semibold">
+                <button className=" cursor-pointer rounded-xl text-sm text-white bg-closet px-5 py-2 font-semibold">
                   Đặt hàng ngay
                 </button>
-                <button className="rounded-xl text-sm text-white bg-closet px-5 py-3 font-semibold">
+                <button className="cursor-pointer rounded-xl text-sm text-white bg-closet px-5 py-2 font-semibold">
                   <ShoppingCart size={20} />
                 </button>
               </div>

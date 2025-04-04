@@ -5,12 +5,13 @@ import React, { useState } from "react";
 interface NavBarProps {
   toggle: () => void;
 }
-const NavBar:React.FC<NavBarProps> = ({toggle}) => {
+const NavBar: React.FC<NavBarProps> = ({ toggle }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <div className="flex flex-col w-full bg-white shadow-md sticky top-0 z-50">
-      {/* thanh tìm kiếm và các button */}
-      <div className="flex justify-between items-center py-2 px-52 gap-24 ">
+    <div className="flex flex-col w-full bg-white shadow-md sticky top-0 z-50 ">
+      <div
+        className="flex justify-center px-4 sm:px-8 lg:px-52 items-center py-2 gap-20 "
+      >
         {/* phần logo */}
         <div className="flex flex-row">
           <img
@@ -35,7 +36,7 @@ const NavBar:React.FC<NavBarProps> = ({toggle}) => {
         <div className="flex flex-row gap-5">
           <div className="flex flex-row items-center gap-2 cursor-pointer ">
             <User color="#b5292f" size={30} strokeWidth={1.25} />
-            <span>Đăng nhập/Đăng kí</span>
+            <span>Đăng nhập/Đăng ký</span>
           </div>
           <div
             className="flex flex-row items-center gap-3 cursor-pointer "

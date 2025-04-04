@@ -39,7 +39,7 @@ export default function FoodCart({ food, onClick,setFocus }: FoodCartProps) {
           })}
           <button
             onClick={handleClick}
-            className="mt-4 px-6 py-2 font-semibold text-sm w-full bg-closet text-white  rounded-full hover:bg-closet-light transition duration-300 cursor-pointer"
+            className="mt-4 px-6 py-1 font-semibold text-sm w-full bg-closet text-white  rounded-full hover:bg-closet-light transition duration-300 cursor-pointer"
           >
             ĐẶT MÓN
           </button>

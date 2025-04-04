@@ -45,7 +45,7 @@ function Home() {
         />
       </div>
 
-      <h1 className="my-10  font-semibold text-2xl relative after:content-[''] after:absolute after:h-1 after:w-1/2  after:left-1/2 after:bottom-[-5px] after:-translate-x-1/2 after:bg-closet">
+      <h1 className="my-10  font-semibold text-2xl relative after:content-[''] after:absolute after:h-[2px] after:w-1/2  after:left-1/2 after:bottom-[-5px] after:-translate-x-1/2 after:bg-closet">
         Khám phá thực đơn của chúng tôi
       </h1>
       {/* phần content */}
