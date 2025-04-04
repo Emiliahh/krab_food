@@ -4,6 +4,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import useCartStore from "@/store/useCart";
 import { ProductType } from "@/types/productType";
 import { Minus, Plus, ShoppingCart } from "lucide-react";
 import { useState } from "react";
@@ -18,6 +19,16 @@ export function DialogDemo({
   product: ProductType;
 }) {
   const [quantity, setQuantity] = useState(1);
+  const [note, setNote] = useState("");
+  const {addItem} = useCartStore();
+  const handleAddCart = ()=>{
+    addItem({
+      id:product.id,
+      quantity:quantity,
+      note:note
+    })
+    setIsOpen(false)
+  }
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent className="sm:max-w-[562px] sm:max-h-[650px] [&>button]:hidden p-0 rounded-md">
@@ -38,7 +49,7 @@ export function DialogDemo({
           <div className="flex-1 overflow-auto flex flex-col gap-1 py-2 border-b border-gray-200">
             {/* name section */}
             <div className="px-4">
-              <h1 className="text-lg text-neutral-800 font-bold">
+              <h1 className="text-base text-neutral-800 font-bold">
                 {product.name || "Bánh mì"}
               </h1>
             </div>
@@ -83,6 +94,8 @@ export function DialogDemo({
             </div>
             <div className="px-4">
               <textarea
+                value={note}
+                onChange={(e) => setNote(e.target.value)}                
                 className="w-full rounded-md bg-[#f7f7f7] min-h-24 max-h-36 p-3 text-xs focus:outline-none"
                 placeholder="Nhập thông tin cần lưu ý ヾ(≧▽≦*)o"
               />
@@ -94,10 +107,10 @@ export function DialogDemo({
                 <h1 className="text-closet font-semibold">180.000đ</h1>
               </div>
               <div className="flex gap-3">
-                <button className=" cursor-pointer rounded-xl text-sm text-white bg-closet px-5 py-2 font-semibold">
+                <button className=" cursor-pointer rounded-sm text-sm text-white bg-closet px-5 py-2 font-semibold">
                   Đặt hàng ngay
                 </button>
-                <button className="cursor-pointer rounded-xl text-sm text-white bg-closet px-5 py-2 font-semibold">
+                <button className="cursor-pointer rounded-sm text-sm text-white bg-closet px-5 py-2 font-semibold" onClick={handleAddCart}>
                   <ShoppingCart size={20} />
                 </button>
               </div>

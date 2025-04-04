@@ -12,11 +12,11 @@ export default function FoodCart({ food, onClick,setFocus }: FoodCartProps) {
   };
   return (
     <div
-      className="border border-[#e5e5e5] p-1 rounded-md flex flex-col items-center justify-center"
+      className="border border-[#e5e5e5] rounded-md flex flex-col items-center justify-center p-1"
       key={food.id}
     >
       {/* đây là phần product banner */}
-      <div className="relative overflow-hidden rounded-md">
+      <div className="relative overflow-hidden rounded-t-md">
         <img
           onClick={handleClick}
           src={food.image}
@@ -28,7 +28,7 @@ export default function FoodCart({ food, onClick,setFocus }: FoodCartProps) {
       <div className="p-4 text-center w-full">
         <h1
           onClick={handleClick}
-          className="text-lg font-semibold text-gray-800 mb-2 cursor-pointer"
+          className="text-base font-semibold text-gray-800 mb-2 cursor-pointer"
         >
           {food.name}
         </h1>
@@ -39,7 +39,7 @@ export default function FoodCart({ food, onClick,setFocus }: FoodCartProps) {
           })}
           <button
             onClick={handleClick}
-            className="mt-4 px-6 py-1 font-semibold text-sm w-full bg-closet text-white  rounded-full hover:bg-closet-light transition duration-300 cursor-pointer"
+            className="mt-4 px-6 py-1 font-medium text-sm w-full bg-closet text-white  rounded-full hover:bg-closet-light transition duration-300 cursor-pointer"
           >
             ĐẶT MÓN
           </button>

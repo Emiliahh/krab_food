@@ -22,7 +22,7 @@ function Home() {
         src="https://plus.unsplash.com/premium_photo-1694715585704-81111d19074d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8dmlldG5hbWVzZSUyMGZvb2R8ZW58MHx8MHx8fDA%3D"
       />
 
-      <div className="flex justify-center gap-4 py-6 w-full ">
+      <div className="flex justify-center gap-2 py-6 w-full ">
         <FeatureCard
           icon={Package}
           title="GIAO HÀNG NHANH"
@@ -45,7 +45,7 @@ function Home() {
         />
       </div>
 
-      <h1 className="my-10  font-semibold text-2xl relative after:content-[''] after:absolute after:h-[2px] after:w-1/2  after:left-1/2 after:bottom-[-5px] after:-translate-x-1/2 after:bg-closet">
+      <h1 className="my-10  font-semibold text-xl relative after:content-[''] after:absolute after:h-[2px] after:w-1/2  after:left-1/2 after:bottom-[-5px] after:-translate-x-1/2 after:bg-closet">
         Khám phá thực đơn của chúng tôi
       </h1>
       {/* phần content */}
