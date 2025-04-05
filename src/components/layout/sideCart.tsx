@@ -1,12 +1,13 @@
 import useCartStore from "@/store/useCart";
 import { motion } from "framer-motion";
-import {  Plus, ShoppingBasket, X } from "lucide-react";
+import { Plus, ShoppingBasket, X } from "lucide-react";
 import CartItems from "./cartItem";
-import { useEffect, useState } from "react";
-import { mockMenuItems } from "@/types/productType";
+import { useEffect, useMemo, useState } from "react";
 import { formatCurrency } from "@/util/currencyFormater";
 // import CartItem from "./cartItem";
 import { CartItem } from "@/types/cartTypes";
+import { useQuery } from "@tanstack/react-query";
+import { getCardDetails } from "@/services/productService";
 const containerVariants = {
   initial: { x: "100%" },
   animate: {
@@ -33,31 +34,56 @@ const containerVariants = {
 // extend type để thêm status checked
 interface CartItemCheck extends CartItem {
   checked: boolean;
+  name?: string;
+  price?: number;
 }
 export default function ShoppingCart({ toggle }: { toggle: () => void }) {
   const { cartItems } = useCartStore();
-  const [totalPrice, setTotalPrice] = useState(0);
   const [cartItemsCheck, setCartItemsCheck] = useState<CartItemCheck[]>([]);
   const [checkboxAll, setCheckboxAll] = useState(false);
+  const productIds = cartItems.map((item) => item.id);
+  const { data: product } = useQuery({
+    queryKey: ["foodCart", productIds],
+    queryFn: () => getCardDetails(productIds),
+    enabled: cartItems.length > 0,
+  });
   //map thêm status checked vào cartItems
+  // tạo một map để kiểm tra xem id có trong cartItems không
+  // nếu có thì lấy giá trị checked từ cartItems
+  // nếu không thì cho checked là false
   useEffect(() => {
-    setCartItemsCheck(
-      cartItems.map((item) => ({
-        ...item,
-        checked: false,
-      }))
-    );
-  }, [cartItems]);
-  useEffect(() => {
-    setTotalPrice(
+    if (cartItemsCheck.length > 0) {
+      setCartItemsCheck((prev) => {
+        const checkMap = new Map(prev.map((item) => [item.id, item.checked]));
+        return cartItems.map((item) => ({
+          ...item,
+          checked: checkMap.get(item.id) ?? false,
+          name: product?.find((productItem) => productItem.id === item.id)
+            ?.name,
+          price: product?.find((productItem) => productItem.id === item.id)
+            ?.price,
+        }));
+      });
+    } else {
+      setCartItemsCheck(
+        cartItems.map((item) => ({
+          ...item,
+          checked: false,
+        }))
+      );
+    }
+  }, [product, cartItemsCheck.length, cartItems]);
+  const totalPrice = useMemo(
+    () =>
       cartItemsCheck.reduce((acc, item) => {
         const itemQuantity = item.quantity || 0;
         const itemPrice =
-          mockMenuItems.find((menuItem) => menuItem.id === item.id)?.price || 0;
+          product?.find((menuItem) => menuItem.id === item.id)?.price || 0;
         return acc + (item.checked ? itemQuantity * itemPrice : 0);
-      }, 0)
-    );
-  }, [cartItemsCheck]);
+      }, 0),
+    [cartItemsCheck, product]
+  );
+
   const setCheckedItems = (id: string, status: boolean) => {
     setCartItemsCheck((prev) =>
       prev.map((item) => (item.id === id ? { ...item, checked: status } : item))

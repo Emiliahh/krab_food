@@ -1,5 +1,4 @@
 import useCartStore from "@/store/useCart";
-import { mockMenuItems } from "@/types/productType";
 import { formatCurrency } from "@/util/currencyFormater";
 import { Minus, Pencil, Plus, Trash } from "lucide-react";
 import React from "react";
@@ -12,12 +11,12 @@ const CartItems: React.FC<CartItemProps> = ({
   quantity,
   note,
   checked,
+  price,
+  name,
   setCheckedItems,
 }) => {
   const { increaseQuantity, decreaseQuantity, removeItem } = useCartStore();
-  const item = mockMenuItems.find((item) => item.id === id);
-  const name = item?.name || "Unknown Item";
-  const price = item?.price || 0;
+  // const item = mockMenuItems.find((item) => item.id === id);
   return (
     <div className="flex flex-col gap-1.5 py-2 border-b border-gray-300">
       <div className="flex justify-between text-sm">

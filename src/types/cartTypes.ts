@@ -3,4 +3,11 @@ interface CartItem {
   quantity: number;
   note?: string;
 }
-export type { CartItem };
+interface CartItemCheck extends CartItem {  
+  checked: boolean;
+}
+interface CartItemWithDetails extends CartItemCheck {
+  name: string;
+  price: number;
+}
+export type { CartItem, CartItemWithDetails, CartItemCheck };

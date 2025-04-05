@@ -1,19 +1,28 @@
 import FeatureCard from "@/components/home/bannerCard";
 import FoodCart from "@/components/home/foodCard";
 import { DialogDemo } from "@/components/home/foodModal";
-import { mockMenuItems, ProductType } from "@/types/productType";
+import { getFoodList } from "@/services/productService";
+import { ProductType } from "@/types/productType";
+import { useQuery } from "@tanstack/react-query";
 import { DollarSign, Headphones, Package, ShieldCheck } from "lucide-react";
 import { useState } from "react";
+import { useSearchParams } from "react-router";
 
 function Home() {
   const [isOpen, setIsOpen] = useState(false);
   const [focus, setFocus] = useState<ProductType | null>(null);
+  const [searchParams] = useSearchParams();
+  const page = searchParams.get("page") || "1";
   const onClick = () => {
     setIsOpen((prev) => !prev);
   };
   const setFocusFood = (food: ProductType) => {
     setFocus(food);
   };
+  const { data: products } = useQuery({
+    queryKey: ["foodList", page],
+    queryFn: () => getFoodList(Number(page), 8),
+  });
   return (
     <div className="flex-1 flex flex-col items-center justify-center px-52 py-3">
       {/* Đây là phần banner */}
@@ -50,11 +59,23 @@ function Home() {
       </h1>
       {/* phần content */}
       <div className="w-full grid grid-cols-4 gap-5">
-        {mockMenuItems.map((item) => (
-          <FoodCart key={item.id} food={item} onClick={onClick} setFocus={setFocusFood} />
+        {(products?.data || []).map((item) => (
+          <FoodCart
+            key={item.id}
+            food={item}
+            onClick={onClick}
+            setFocus={setFocusFood}
+          />
         ))}
       </div>
-      {focus && <DialogDemo key={focus.id} isOpen={isOpen} setIsOpen={setIsOpen} product={focus} />}
+      {focus && (
+        <DialogDemo
+          key={focus.id}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          product={focus}
+        />
+      )}
     </div>
   );
 }
