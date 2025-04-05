@@ -1,11 +1,25 @@
 import FeatureCard from "@/components/home/bannerCard";
 import FoodCart from "@/components/home/foodCard";
 import { DialogDemo } from "@/components/home/foodModal";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import { getFoodList } from "@/services/productService";
 import { ProductType } from "@/types/productType";
 import { useQuery } from "@tanstack/react-query";
-import { DollarSign, Headphones, Package, ShieldCheck } from "lucide-react";
-import { useState } from "react";
+import {
+  DollarSign,
+  Headphones,
+  Package,
+  ShieldCheck,
+} from "lucide-react";
+import {  useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
 
 function Home() {
@@ -22,7 +36,22 @@ function Home() {
   const { data: products } = useQuery({
     queryKey: ["foodList", page],
     queryFn: () => getFoodList(Number(page), 8),
+    
   });
+
+  //  tính pagninate
+  const list = useMemo(() => {
+    const pageNumber = Number(page);
+    const totalPage = products?.totalPage ?? 0;
+    const range = 2;
+    const start = Math.max(1, pageNumber - range);
+    const end = Math.min(totalPage, pageNumber + range);
+    const pages = [];
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+    return pages;
+  }, [page, products]);
   return (
     <div className="flex-1 flex flex-col items-center justify-center px-52 py-3">
       {/* Đây là phần banner */}
@@ -76,6 +105,67 @@ function Home() {
           product={focus}
         />
       )}
+      {/* paginate part */}
+      <div className="py-10 flex justify-center w-full">
+        <Pagination>
+          <PaginationContent>
+            {/* nút previous */}
+            <PaginationItem>
+              <PaginationPrevious
+                to={`/?page=${Math.max(1, Number(page) - 1)}`}
+              />
+            </PaginationItem>
+
+            {/* nếu bắt đầu lớn hơn 1 thì hiện một và ... */}
+            {list[0] > 1 && (
+              <>
+                <PaginationItem>
+                  <PaginationLink to="/?page=1">1</PaginationLink>
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationEllipsis />
+                </PaginationItem>
+              </>
+            )}
+
+            {/* map số trang */}
+            {list.map((p) => (
+              <PaginationItem key={p}>
+                <PaginationLink
+                  to={`/?page=${p}`}
+                  isActive={Number(page) === p}
+                >
+                  {p}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+
+            {/* // nếu trang cuối nhỏ hơn tổng số trang thì hiện ... và trang cuối */}
+            {list[list.length - 1] < (products?.totalPage ?? 1) && (
+              <>
+                <PaginationItem>
+                  <PaginationEllipsis />
+                </PaginationItem>
+                <PaginationItem>
+                  <PaginationLink to={`/?page=${products?.totalPage}`}>
+                    {products?.totalPage}
+                  </PaginationLink>
+                </PaginationItem>
+              </>
+            )}
+
+            {/* nút next */}
+            <PaginationItem>
+              <PaginationNext
+                to={`/?page=${Math.min(
+                  Number(page) + 1,
+                  products?.totalPage ?? 1
+                )}`}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      </div>
     </div>
   );
 }

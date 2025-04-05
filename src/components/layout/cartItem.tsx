@@ -1,9 +1,9 @@
 import useCartStore from "@/store/useCart";
+import {  CartItemWithDetails } from "@/types/cartTypes";
 import { formatCurrency } from "@/util/currencyFormater";
 import { Minus, Pencil, Plus, Trash } from "lucide-react";
 import React from "react";
-import { CartItemCheck } from "./sideCart";
-interface CartItemProps extends CartItemCheck {
+interface CartItemProps extends CartItemWithDetails {
   setCheckedItems: (id: string, status: boolean) => void;
 }
 const CartItems: React.FC<CartItemProps> = ({

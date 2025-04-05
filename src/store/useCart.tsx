@@ -1,16 +1,19 @@
-import { CartItem } from "@/types/cartTypes";
+import {  CartItemCheck } from "@/types/cartTypes";
 import { create } from 'zustand'
 
 interface CartState {
-    cartItems: CartItem[];
+    cartItems: CartItemCheck[];
     increaseQuantity: (id: string) => void;
     decreaseQuantity: (id: string) => void;
+    changeChecked: (id: string, checked: boolean) => void;
+    checkAll: (checked: boolean) => void;
     removeItem: (id: string) => void;
-    addItem: (item: CartItem) => void;
+    countCheckedItems: () => number;
+    addItem: (item: CartItemCheck) => void;
     clearCart: () => void;
     changenote:(id:string, note:string)=>void
 }
-const useCartStore = create<CartState>()((set)=>({
+const useCartStore = create<CartState>()((set, get)=>({
     cartItems: [],
     
     increaseQuantity: (id: string) => set((state) => {
@@ -20,6 +23,11 @@ const useCartStore = create<CartState>()((set)=>({
         return { cartItems };
     }
     ),
+    countCheckedItems:()=>{
+        const state = get().cartItems;
+        const checkedItems = state.filter((item) => item.checked);
+        return checkedItems.length;
+    },
 
     decreaseQuantity: (id: string) => set((state) => {
         const cartItems = state.cartItems.map((item) =>
@@ -28,14 +36,26 @@ const useCartStore = create<CartState>()((set)=>({
         return { cartItems };
     }
     ),
-
+    changeChecked: (id: string, checked: boolean) => set((state) => {
+        const cartItems = state.cartItems.map((item) =>
+            item.id === id ? { ...item, checked: checked } : item
+        );
+        return { cartItems };
+    }
+    ),
+    checkAll: (checked: boolean) => set((state) => {
+        const cartItems = state.cartItems.map((item) => {
+            return { ...item, checked: checked };
+        });
+        return { cartItems };
+    }),
     removeItem: (id: string) => set((state) => {
         const cartItems = state.cartItems.filter((item) => item.id !== id);
         return { cartItems };
     }
     ),
 
-    addItem: (item: CartItem) => set((state) => {
+    addItem: (item: CartItemCheck) => set((state) => {
         const existingItem = state.cartItems.find((cartItem) => cartItem.id === item.id);
         if (existingItem) {
             const cartItems = state.cartItems.map((cartItem) =>
@@ -43,7 +63,10 @@ const useCartStore = create<CartState>()((set)=>({
             );
             return { cartItems };
         } else {
-            return { cartItems: [...state.cartItems, item] };
+            return { cartItems: [...state.cartItems, {
+                ...item,
+                checked: false,
+            }] };
         }
     }
     ),
