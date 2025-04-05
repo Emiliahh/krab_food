@@ -3,17 +3,20 @@ import FilterBar from "./filterBar";
 import { AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
 import useCartStore from "@/store/useCart";
+import useSearchStore from "@/store/useSearch";
 interface NavBarProps {
   toggle: () => void;
 }
 const NavBar: React.FC<NavBarProps> = ({ toggle }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { search, setSearch } = useSearchStore();
   const { cartItems } = useCartStore();
+  const toggleFilterBar = () => {
+    setIsOpen((prev) => !prev);
+  };
   return (
     <nav className="flex flex-col w-full bg-white shadow-md sticky top-0 z-50">
-      <div
-        className="flex justify-center px-4 sm:px-8 lg:px-52 items-center py-2 gap-20 "
-      >
+      <div className="flex justify-center px-4 sm:px-8 lg:px-52 items-center py-2 gap-20 ">
         {/* phần logo */}
         <div className="flex flex-row">
           <img
@@ -25,7 +28,12 @@ const NavBar: React.FC<NavBarProps> = ({ toggle }) => {
         {/* thanh tìm kiếm */}
         <div className="flex  max-w-[800px] flex-row items-center flex-1 gap-5 pl-3 pr-1 py-1 rounded-full bg-light-gray border-none  text-gray-700 ">
           <Search size={23} strokeWidth={1.25} />
-          <input placeholder="Search" className="flex-1 focus:outline-none text-sm" />
+          <input
+            placeholder="Search"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="flex-1 focus:outline-none text-sm"
+          />
           <button
             className="bg-closet text-white px-4 py-1 rounded-full flex items-center gap-1 cursor-pointer"
             onClick={() => setIsOpen(!isOpen)}
@@ -55,7 +63,9 @@ const NavBar: React.FC<NavBarProps> = ({ toggle }) => {
         </div>
       </div>
       {/* thanh filter */}
-      <AnimatePresence>{isOpen && <FilterBar />}</AnimatePresence>
+      <AnimatePresence>
+        {isOpen && <FilterBar toggle={toggleFilterBar} />}
+      </AnimatePresence>
     </nav>
   );
 };

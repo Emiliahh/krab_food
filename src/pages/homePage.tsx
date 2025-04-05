@@ -11,21 +11,18 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { getFoodList } from "@/services/productService";
+import useSearchStore from "@/store/useSearch";
 import { ProductType } from "@/types/productType";
 import { useQuery } from "@tanstack/react-query";
-import {
-  DollarSign,
-  Headphones,
-  Package,
-  ShieldCheck,
-} from "lucide-react";
-import {  useMemo, useState } from "react";
+import { DollarSign, Headphones, Package, ShieldCheck } from "lucide-react";
+import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router";
 
 function Home() {
   const [isOpen, setIsOpen] = useState(false);
   const [focus, setFocus] = useState<ProductType | null>(null);
   const [searchParams] = useSearchParams();
+  const { from, to, search, desc } = useSearchStore();
   const page = searchParams.get("page") || "1";
   const onClick = () => {
     setIsOpen((prev) => !prev);
@@ -33,14 +30,14 @@ function Home() {
   const setFocusFood = (food: ProductType) => {
     setFocus(food);
   };
+  //parse to and from if not parsable alert
+  const parsedFrom = Number.parseFloat(from);
+  const parsedTo = Number.parseFloat(to);
   const { data: products } = useQuery({
-    queryKey: ["foodList", page],
-    queryFn: () => getFoodList(Number(page), 8),
-    
+    queryKey: ["foodList", page, desc, search, from, to],
+    queryFn: () =>
+      getFoodList(Number(page), 8, desc, search, "", parsedFrom, parsedTo),
   });
-  // useEffect(() => {
-  //   window.scrollTo(0, 0);
-  // }, [page]);
 
   //  tính pagninate
   const list = useMemo(() => {
