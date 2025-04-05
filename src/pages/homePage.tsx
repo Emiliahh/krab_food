@@ -38,6 +38,9 @@ function Home() {
     queryFn: () => getFoodList(Number(page), 8),
     
   });
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, [page]);
 
   //  tính pagninate
   const list = useMemo(() => {

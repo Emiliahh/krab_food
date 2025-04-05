@@ -2,9 +2,10 @@ import useCartStore from "@/store/useCart";
 import {  CartItemWithDetails } from "@/types/cartTypes";
 import { formatCurrency } from "@/util/currencyFormater";
 import { Minus, Pencil, Plus, Trash } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 interface CartItemProps extends CartItemWithDetails {
   setCheckedItems: (id: string, status: boolean) => void;
+  changeNote: (id: string, note: string) => void;
 }
 const CartItems: React.FC<CartItemProps> = ({
   id,
@@ -13,10 +14,22 @@ const CartItems: React.FC<CartItemProps> = ({
   checked,
   price,
   name,
+  changeNote,
   setCheckedItems,
 }) => {
   const { increaseQuantity, decreaseQuantity, removeItem } = useCartStore();
   // const item = mockMenuItems.find((item) => item.id === id);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedNote, setEditedNote] = useState(note);
+  const handleSaveNote = () => {
+    changeNote(id, editedNote??"");
+    setIsEditing(false);
+  };
+  const handleCancelNote = () => {
+    setEditedNote(note);
+    setIsEditing(false);
+  }
+
   return (
     <div className="flex flex-col gap-1.5 py-2 border-b border-gray-300">
       <div className="flex justify-between text-sm">
@@ -32,10 +45,48 @@ const CartItems: React.FC<CartItemProps> = ({
           {formatCurrency(price ?? 0)}
         </h1>
       </div>
-      <span className="italic text-gray-500 text-xs flex gap-2 items-center py-1">
-        <Pencil size={15} />
-        {note || "Không có ghi chú"}
-      </span>
+      <span className="italic text-gray-500 text-xs flex flex-col gap-2 py-1 w-full">
+  {isEditing ? (
+    <div className="flex gap-2 w-full">
+      <Pencil
+        size={15}
+        className="mt-2 text-gray-500"
+      />
+      <div className="flex flex-col gap-2 w-full not-italic">
+        <textarea
+          value={editedNote}
+          onChange={(e) => setEditedNote(e.target.value)}
+          className="border rounded-md p-2 w-full text-gray-700 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-300"
+          rows={3}
+        />
+        <div className="flex gap-2">
+          <button
+            onClick={handleSaveNote}
+            className="px-3 py-1 text-xs rounded-md text-white bg-closet"
+          >
+            Save
+          </button>
+          <button
+            onClick={handleCancelNote}
+            className="px-3 py-1 text-xs rounded-md text-gray-600 border border-gray-300 hover:bg-gray-100"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  ) : (
+    <div className="flex items-center gap-2 w-full">
+      <Pencil
+        size={15}
+        onClick={() => setIsEditing(true)}
+        className="cursor-pointer hover:text-blue-500"
+      />
+      <span className="text-xs">{note || "Không có ghi chú"}</span>
+    </div>
+  )}
+</span>
+
       <div className="flex justify-between text-base">
         {/* delete btn */}
         <button className="py-1 px-3 rounded-sm bg-closet text-white" onClick={() => removeItem(id)}>

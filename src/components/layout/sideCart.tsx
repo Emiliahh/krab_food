@@ -34,7 +34,7 @@ const containerVariants = {
 // extend type để thêm status checked
 
 export default function ShoppingCart({ toggle }: { toggle: () => void }) {
-  const { cartItems, countCheckedItems, changeChecked, checkAll } =
+  const { cartItems, countCheckedItems, changeChecked, checkAll, changeNote } =
     useCartStore();
   const [cartDisplay, setCartDisplay] = useState<CartItemWithDetails[]>();
   const [checkboxAll, setCheckboxAll] = useState(false);
@@ -44,7 +44,7 @@ export default function ShoppingCart({ toggle }: { toggle: () => void }) {
     queryFn: () => getCardDetails(productIds),
     enabled: cartItems.length > 0,
   });
-  useEffect(()=>{
+  useEffect(() => {
     if (product) {
       const cartItemsWithDetails = cartItems.map((item) => {
         const productDetails = product.find((p) => p.id === item.id);
@@ -57,8 +57,7 @@ export default function ShoppingCart({ toggle }: { toggle: () => void }) {
       });
       setCartDisplay(cartItemsWithDetails);
     }
-
-  },[product,cartItems])  
+  }, [product, cartItems]);
   //map thêm status checked vào cartItems
   // tạo một map để kiểm tra xem id có trong cartItems không
   // nếu có thì lấy giá trị checked từ cartItems
@@ -90,22 +89,16 @@ export default function ShoppingCart({ toggle }: { toggle: () => void }) {
         <div className="w-full h-full bg-white rounded-lg flex flex-col">
           {/* this is header part */}
           <div className="h-14 border-b border-gray-300 flex justify-between items-center px-5">
-            <div className="h-14 border-b border-gray-300 flex justify-between items-center px-5">
-              {countCheckedItems() === 0 ? (
-                <span className="text-gray-800 font-semibold flex items-center gap-3">
-                  <ShoppingBasket
-                    color="#b5292f"
-                    size={30}
-                    strokeWidth={1.25}
-                  />
-                  Giỏ hàng
-                </span>
-              ) : (
-                <span className="text-gray-800 font-semibold flex items-center gap-3">
-                  {`Đã chọn: ${countCheckedItems()}`}
-                </span>
-              )}
-            </div>
+            {countCheckedItems() === 0 ? (
+              <span className="text-gray-800 font-semibold flex items-center gap-3">
+                <ShoppingBasket color="#b5292f" size={30} strokeWidth={1.25} />
+                Giỏ hàng
+              </span>
+            ) : (
+              <span className="text-gray-800 font-semibold flex items-center gap-3">
+                {`Đã chọn: ${countCheckedItems()}`}
+              </span>
+            )}
             <button className="cursor-pointer" onClick={toggle}>
               <X size={25} strokeWidth={1.25} />
             </button>
@@ -120,6 +113,7 @@ export default function ShoppingCart({ toggle }: { toggle: () => void }) {
               // Map through cartItems here
               (cartDisplay ?? []).map((item) => (
                 <CartItems
+                  changeNote={changeNote}
                   setCheckedItems={changeChecked}
                   key={item.id}
                   {...item}

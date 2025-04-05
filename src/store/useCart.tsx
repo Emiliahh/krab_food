@@ -11,7 +11,7 @@ interface CartState {
     countCheckedItems: () => number;
     addItem: (item: CartItemCheck) => void;
     clearCart: () => void;
-    changenote:(id:string, note:string)=>void
+    changeNote:(id:string, note:string)=>void
 }
 const useCartStore = create<CartState>()((set, get)=>({
     cartItems: [],
@@ -72,7 +72,7 @@ const useCartStore = create<CartState>()((set, get)=>({
     ),
     clearCart: () => set({ cartItems: [] }),
 
-    changenote:(id:string, note:string)=>set((state)=>{
+    changeNote:(id:string, note:string)=>set((state)=>{
         const cartItems = state.cartItems.map((item) =>
             item.id === id ? { ...item, note: note } : item
         );

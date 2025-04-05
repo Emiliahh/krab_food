@@ -10,7 +10,7 @@ const NavBar: React.FC<NavBarProps> = ({ toggle }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { cartItems } = useCartStore();
   return (
-    <div className="flex flex-col w-full bg-white shadow-md sticky top-0 z-50">
+    <nav className="flex flex-col w-full bg-white shadow-md sticky top-0 z-50">
       <div
         className="flex justify-center px-4 sm:px-8 lg:px-52 items-center py-2 gap-20 "
       >
@@ -56,7 +56,7 @@ const NavBar: React.FC<NavBarProps> = ({ toggle }) => {
       </div>
       {/* thanh filter */}
       <AnimatePresence>{isOpen && <FilterBar />}</AnimatePresence>
-    </div>
+    </nav>
   );
 };
 export default NavBar;
