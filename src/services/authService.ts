@@ -10,17 +10,18 @@ const api = axios.create({
   },
 });
 const login = async (
-  phone: string,
+  email: string,
   password: string
 ): Promise<AxiosResponse<LoginRes> | null> => {
   try {
     const response = await api.post<LoginRes>(
       "/login",
-      { phone, password },
+      { email, password },
       {
         withCredentials: true,
       }
     );
+    console.log("Login response:", response);
     return response;
   } catch (error) {
     alert("Invalid email or password");

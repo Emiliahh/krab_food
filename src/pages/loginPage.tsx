@@ -1,23 +1,34 @@
+import useUserStore from "@/store/useUser";
 import React, { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 const LoginPage: React.FC = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
-
-  const handleLogin = (event: React.FormEvent) => {
+  const { login, user } = useUserStore();
+  const navigate = useNavigate();
+  const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log({ phoneNumber, password });
-    // Thêm logic xử lý đăng nhập ở đây
+    const success = await login(phoneNumber, password);
+    if (success) {
+      alert("Đăng nhập thành công!");
+      console.log(user);
+      navigate("/");
+    } else {
+      alert("Đăng nhập thất bại!");
+    }
   };
 
   return (
     <div className="w-full h-screen flex items-center justify-center bg-gray-100 relative">
-      <div className="absolute top-0 left-0 w-full h-full bg-cover bg-center filter blur-sm" 
-           style={{ backgroundImage: "url('/path-to-your-food-background.jpg')" }}>
-      </div>
+      <div
+        className="absolute top-0 left-0 w-full h-full bg-cover bg-center filter blur-sm"
+        style={{ backgroundImage: "url('/path-to-your-food-background.jpg')" }}
+      ></div>
       <div className="bg-white p-8 rounded-lg shadow-lg z-10 max-w-md w-full">
-        <h1 className="text-2xl font-bold text-center text-closet mb-6">Đăng Nhập</h1>
+        <h1 className="text-2xl font-bold text-center text-closet mb-6">
+          Đăng Nhập
+        </h1>
         <form onSubmit={handleLogin} className="space-y-4">
           <input
             type="text"
@@ -43,7 +54,7 @@ const LoginPage: React.FC = () => {
           </button>
         </form>
         <p className="text-center text-sm text-gray-600 mt-4">
-          Bạn chưa có tài khoản?{' '}
+          Bạn chưa có tài khoản?{" "}
           <Link to="/register" className="text-closet hover:underline">
             Đăng ký ngay
           </Link>

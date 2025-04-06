@@ -4,6 +4,8 @@ import { AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
 import useCartStore from "@/store/useCart";
 import useSearchStore from "@/store/useSearch";
+import { Link } from "react-router";
+import useUserStore from "@/store/useUser";
 
 interface NavBarProps {
   toggle: () => void;
@@ -11,6 +13,7 @@ interface NavBarProps {
 const NavBar: React.FC<NavBarProps> = ({ toggle }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { search, setSearch } = useSearchStore();
+  const { isAuthenticated, user, logout } = useUserStore();
   const { cartItems } = useCartStore();
   const toggleFilterBar = () => {
     setIsOpen((prev) => !prev);
@@ -27,7 +30,7 @@ const NavBar: React.FC<NavBarProps> = ({ toggle }) => {
           />
         </div>
         {/* thanh tìm kiếm */}
-        <div className="flex  max-w-[800px] flex-row items-center flex-1 gap-5 pl-3 pr-1 py-1 rounded-full bg-light-gray border-none  text-gray-700 ">
+        <div className="flex  max-w-[520px] flex-row items-center flex-1 gap-5 pl-3 pr-1 py-1 rounded-full bg-light-gray border-none  text-gray-700 ">
           <Search size={23} strokeWidth={1.25} />
           <input
             placeholder="Search"
@@ -44,10 +47,47 @@ const NavBar: React.FC<NavBarProps> = ({ toggle }) => {
           </button>
         </div>
         {/* phần user và giỏ hàng */}
-        <div className="flex flex-row gap-5">
-          <div className="flex flex-row items-center gap-2 cursor-pointer ">
-            <User color="#b5292f" size={30} strokeWidth={1.25} />
-            <span className="text-sm">Đăng nhập/Đăng ký</span>
+        <div className="flex flex-row gap-5 items-center">
+          <div className="dropdown dropdown-hover">
+            <div
+              role="button"
+              className="flex flex-row items-center gap-2 cursor-pointer m-1"
+            >
+              <User color="#b5292f" size={30} strokeWidth={1.25} />
+              {!isAuthenticated ? (
+                <span className="text-sm">Đăng nhập/Đăng ký</span>
+              ) : (
+                <span className="text-sm">{user?.name}</span>
+              )}
+            </div>
+            {!isAuthenticated ? (
+              <ul
+                tabIndex={0}
+                className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow shadow-gray-"
+              >
+                <li>
+                  <Link to="/login">Đăng nhập</Link>
+                </li>
+                <li>
+                  <Link to="/register">Đăng ký</Link>
+                </li>
+              </ul>
+            ) : (
+              <ul
+                tabIndex={0}
+                className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow shadow-gray-"
+              >
+                <li>
+                  <Link to="/profile">Thông tin tài khoản</Link>
+                </li>
+                <li>
+                  <Link to="/order">Đơn hàng của tôi</Link>
+                </li>
+                <li onClick={logout}>
+                  <a>Đăng xuất</a>
+                </li>
+              </ul>
+            )}
           </div>
           <div
             className="flex flex-row items-center gap-3 cursor-pointer "
