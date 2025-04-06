@@ -4,9 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import {
   X,
-  ArrowDownNarrowWide,
   RotateCcw,
-  ArrowUpNarrowWide,
+  ArrowDown10,
+  ArrowUp10,
 } from "lucide-react";
 import React from "react";
 interface FilterBarProps {
@@ -103,9 +103,9 @@ const FilterBar: React.FC<FilterBarProps> = ({ toggle }) => {
           }}
         >
           {desc ? (
-            <ArrowDownNarrowWide size={18} />
+            <ArrowDown10 size={18} />
           ) : (
-            <ArrowUpNarrowWide size={18} />
+            <ArrowUp10 size={18} />
           )}
         </button>
         <button
