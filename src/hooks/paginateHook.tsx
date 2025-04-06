@@ -3,7 +3,7 @@ import { useMemo } from "react";
 interface UsePaginateHookProps {
   page: number;
   totalPage: number;
-  range?: number; // optional range parameter. Defaults to 2.
+  range?: number; 
 }
 
 const usePaginateHook = ({ page, totalPage, range = 2 }: UsePaginateHookProps) => {

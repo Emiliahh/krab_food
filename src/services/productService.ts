@@ -9,6 +9,7 @@ const ProductApi = axios.create({
     "Content-Type": "application/json",
   },
 });
+// https://localhost:5114/api/Product/?page="page"&=pageSize="pageSize"&desc="desc"&search="search"&categoryId="categoryId"&from="from"&to="to"
 const getFoodList = async (
   page: number = 1,
   pageSize: number = 10,
