@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router';
 
 const RegisterPage: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -25,7 +26,7 @@ const RegisterPage: React.FC = () => {
   return (
     <div className="w-full h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-        <h1 className="text-2xl font-bold text-center text-orange-500 mb-6">Đăng Ký Tài Khoản</h1>
+        <h1 className="text-2xl font-bold text-center text-closet mb-6">Đăng Ký Tài Khoản</h1>
         <form onSubmit={handleRegister} className="space-y-4">
           <input
             type="email"
@@ -78,16 +79,16 @@ const RegisterPage: React.FC = () => {
           </div>
           <button
             type="submit"
-            className="w-full py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition"
+            className="w-full py-2 bg-closet text-white rounded-lg hover:bg-red-500 transition"
           >
             ĐĂNG KÝ
           </button>
         </form>
         <p className="text-center text-sm text-gray-600 mt-4">
           Bạn đã có tài khoản?{' '}
-          <a href="/login" className="text-orange-500 hover:underline">
+          <Link to="/login" className="text-closet hover:underline">
             Đăng nhập ngay
-          </a>
+          </Link>
         </p>
       </div>
     </div>
