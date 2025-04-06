@@ -21,7 +21,7 @@ const containerVariants = {
     },
   },
   exit: {
-    x: "100%",
+    x: "110%",
     transition: {
       type: "spring",
       stiffness: 300,
@@ -58,10 +58,6 @@ export default function ShoppingCart({ toggle }: { toggle: () => void }) {
       setCartDisplay(cartItemsWithDetails);
     }
   }, [product, cartItems]);
-  //map thêm status checked vào cartItems
-  // tạo một map để kiểm tra xem id có trong cartItems không
-  // nếu có thì lấy giá trị checked từ cartItems
-  // nếu không thì cho checked là false
   const totalPrice = useMemo(
     () =>
       cartItems.reduce((acc, item) => {

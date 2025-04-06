@@ -1,6 +1,6 @@
 import { CartItemWithDetails } from "@/types/cartTypes";
 import PaginatedResponse from "@/types/paginatedRes";
-import { ProductType } from "@/types/productType";
+import { Category, ProductType } from "@/types/productType";
 import axios from "axios";
 
 const ProductApi = axios.create({
@@ -60,4 +60,13 @@ const getCardDetails = async (
     throw error;
   }
 };
-export { getFoodList, getCardDetails };
+const getCategoryList = async (): Promise<Category[] | null> => {
+  try {
+    const response = await ProductApi.get<Category[]>("/category");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching category list:", error);
+    throw error;
+  }
+}
+export { getFoodList, getCardDetails, getCategoryList };

@@ -4,6 +4,7 @@ import { AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
 import useCartStore from "@/store/useCart";
 import useSearchStore from "@/store/useSearch";
+
 interface NavBarProps {
   toggle: () => void;
 }

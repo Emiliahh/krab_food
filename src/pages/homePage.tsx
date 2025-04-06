@@ -10,48 +10,52 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import usePaginateHook from "@/hooks/paginateHook";
 import { getFoodList } from "@/services/productService";
 import useSearchStore from "@/store/useSearch";
 import { ProductType } from "@/types/productType";
 import { useQuery } from "@tanstack/react-query";
 import { DollarSign, Headphones, Package, ShieldCheck } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useSearchParams } from "react-router";
 
 function Home() {
   const [isOpen, setIsOpen] = useState(false);
   const [focus, setFocus] = useState<ProductType | null>(null);
   const [searchParams] = useSearchParams();
-  const { from, to, search, desc } = useSearchStore();
+  const { from, to, search, desc, categoryId } = useSearchStore();
   const page = searchParams.get("page") || "1";
   const onClick = () => {
     setIsOpen((prev) => !prev);
   };
+
   const setFocusFood = (food: ProductType) => {
     setFocus(food);
   };
-  //parse to and from if not parsable alert
+
   const parsedFrom = Number.parseFloat(from);
   const parsedTo = Number.parseFloat(to);
-  const { data: products } = useQuery({
-    queryKey: ["foodList", page, desc, search, from, to],
+  // truy vấn dữ liệu trên trang chủ
+  const { data: products, isLoading } = useQuery({
+    queryKey: ["foodList", page, desc, search, categoryId, from, to],
     queryFn: () =>
-      getFoodList(Number(page), 8, desc, search, "", parsedFrom, parsedTo),
+      getFoodList(
+        Number(page),
+        8,
+        desc,
+        search,
+        categoryId,
+        parsedFrom,
+        parsedTo
+      ),
   });
 
-  //  tính pagninate
-  const list = useMemo(() => {
-    const pageNumber = Number(page);
-    const totalPage = products?.totalPage ?? 0;
-    const range = 2;
-    const start = Math.max(1, pageNumber - range);
-    const end = Math.min(totalPage, pageNumber + range);
-    const pages = [];
-    for (let i = start; i <= end; i++) {
-      pages.push(i);
-    }
-    return pages;
-  }, [page, products]);
+  const list = usePaginateHook({
+    page: Number(page),
+    totalPage: products?.totalPage ?? 0,
+    range: 2,
+  });
+
   return (
     <div className="flex-1 flex flex-col items-center justify-center px-52 py-3">
       {/* Đây là phần banner */}
@@ -87,16 +91,27 @@ function Home() {
         Khám phá thực đơn của chúng tôi
       </h1>
       {/* phần content */}
-      <div className="w-full grid grid-cols-4 gap-5">
-        {(products?.data || []).map((item) => (
-          <FoodCart
-            key={item.id}
-            food={item}
-            onClick={onClick}
-            setFocus={setFocusFood}
+      {isLoading ? (
+        <div className="col-span-4 flex justify-center items-center py-10">
+          <img
+            src="https://assets-v2.lottiefiles.com/a/d5392796-1169-11ee-908e-b33ed8d96ca4/kW0SJwvz27.gif"
+            alt="Loading..."
+            className="w-24 h-24"
           />
-        ))}
-      </div>
+        </div>
+      ) : (
+        <div className="w-full grid grid-cols-4 gap-5">
+          {(products?.data || []).map((item) => (
+            <FoodCart
+              key={item.id}
+              food={item}
+              onClick={onClick}
+              setFocus={setFocusFood}
+            />
+          ))}
+        </div>
+      )}
+
       {focus && (
         <DialogDemo
           key={focus.id}

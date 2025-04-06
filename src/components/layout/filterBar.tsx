@@ -1,4 +1,6 @@
+import { getCategoryList } from "@/services/productService";
 import useSearchStore from "@/store/useSearch";
+import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import {
   X,
@@ -10,7 +12,7 @@ import React from "react";
 interface FilterBarProps {
   toggle: () => void;
 }
-const FilterBar:React.FC<FilterBarProps> = ({toggle}) => {
+const FilterBar: React.FC<FilterBarProps> = ({ toggle }) => {
   const filterBarVariants = {
     hidden: {
       y: "-20px",
@@ -25,21 +27,43 @@ const FilterBar:React.FC<FilterBarProps> = ({toggle}) => {
       },
     },
   };
-  const { from, to, desc, clearSearch, setFrom, setTo, setDesc } =
-    useSearchStore();
+  const {
+    from,
+    to,
+    desc,
+    categoryId,
+    clearSearch,
+    setFrom,
+    setTo,
+    setDesc,
+    setCategoryId,
+  } = useSearchStore();
+  const { data: categories } = useQuery({
+    queryKey: ["categories"],
+    queryFn: () => getCategoryList(),
+  });
 
   return (
     <motion.div
       variants={filterBarVariants}
       initial="hidden"
       animate="visible"
-      className="flex items-center justify-center gap-20 p-2  border-t border-gray-200 "
+      className="flex items-center justify-center gap-20 p-2  border-t border-gray-200 text-sm "
     >
       {/* Category Filter */}
       <div className="flex items-center gap-2">
         <span>Phân loại</span>
-        <select className="bg-light-gray px-3 w-32 py-1 rounded-xs">
-          <option>Tất cả</option>
+        <select
+          className="bg-light-gray px-3 w-32 py-1 rounded-xs"
+          onChange={(e) => setCategoryId(e.target.value)}
+          value={categoryId}
+        >
+          <option value={""}>Tất cả</option>
+          {categories?.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -84,7 +108,10 @@ const FilterBar:React.FC<FilterBarProps> = ({toggle}) => {
             <ArrowUpNarrowWide size={18} />
           )}
         </button>
-        <button className="bg-gray-200 p-2 rounded-md" onClick={clearSearch}>
+        <button
+          className="bg-gray-200 p-2 rounded-md"
+          onClick={() => clearSearch()}
+        >
           <RotateCcw size={18} />
         </button>
         <button className="bg-gray-200 p-2 rounded-md" onClick={toggle}>
