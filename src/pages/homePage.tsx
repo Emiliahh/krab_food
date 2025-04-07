@@ -1,6 +1,7 @@
 import FeatureCard from "@/components/home/bannerCard";
 import FoodCart from "@/components/home/foodCard";
 import { DialogDemo } from "@/components/home/foodModal";
+import LoadingSpinner from "@/components/layout/loadingSpinner";
 import {
   Pagination,
   PaginationContent,
@@ -92,13 +93,7 @@ function Home() {
       </h1>
       {/* phần content */}
       {isLoading ? (
-        <div className="col-span-4 flex justify-center items-center py-10">
-          <img
-            src="https://assets-v2.lottiefiles.com/a/d5392796-1169-11ee-908e-b33ed8d96ca4/kW0SJwvz27.gif"
-            alt="Loading..."
-            className="w-24 h-24"
-          />
-        </div>
+        <LoadingSpinner />
       ) : (
         <div className="w-full grid grid-cols-4 gap-5">
           {(products?.data || []).map((item) => (

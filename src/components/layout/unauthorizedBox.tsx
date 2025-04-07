@@ -23,7 +23,7 @@ export function UnauthorizedAlertDialog() {
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Truy cập bị từ chối</AlertDialogTitle>
+          <AlertDialogTitle>Truy cập bị từ chối ⛔</AlertDialogTitle>
           <AlertDialogDescription>
             Bạn không có quyền truy cập trang này.
           </AlertDialogDescription>

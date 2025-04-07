@@ -25,7 +25,8 @@ export function DialogDemo({
     addItem({
       id:product.id,
       quantity:quantity,
-      note:note
+      note:note,
+      checked:false,
     })
     setIsOpen(false)
   }
@@ -64,19 +65,19 @@ export function DialogDemo({
               {/* quantity change */}
               <div className="flex items-center gap-2">
                 <button
-                  className="bg-white border border-gray-300  rounded-full w-8 h-8 flex items-center justify-center"
+                  className="bg-white border border-gray-300  rounded-full w-6 h-6 flex items-center justify-center"
                   onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}
                 >
-                  <Minus size={20} />
+                  <Minus size={15} />
                 </button>
-                <div className="px-3 bg-white text-black py-1 rounded-md border border-gray-300">
+                <div className="px-2 bg-white text-black  rounded-md border border-gray-300">
                   {quantity}
                 </div>
                 <button
-                  className="bg-white border border-gray-300  rounded-full w-8 h-8 flex items-center justify-center"
+                  className="bg-white border border-gray-300  rounded-full w-6 h-6 flex items-center justify-center"
                   onClick={() => setQuantity((prev) => prev + 1)}
                 >
-                  <Plus size={20} />
+                  <Plus size={15} />
                 </button>
               </div>
             </div>

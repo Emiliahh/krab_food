@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { checkAdmin } from "@/services/authService";
 import LoadingSpinner from "@/components/layout/loadingSpinner";
 import { UnauthorizedAlertDialog } from "@/components/layout/unauthorizedBox";
+import SideTab from "@/components/admin/sideTab";
 
 const AdminLayout = () => {
   const { isLoading, error } = useQuery({
@@ -15,15 +16,24 @@ const AdminLayout = () => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center min-h-svh items-center">
+      <div className="flex justify-center min-h-screen items-center">
         <LoadingSpinner />
       </div>
-    ); // You can style this or show a spinner
+    );
   }
   if (error) {
     return <UnauthorizedAlertDialog />;
   }
-  return <Outlet />;
+  return (
+    <div className="flex overflow-hidden h-screen">
+      <div className="sticky top-0 z-10">
+        <SideTab />
+      </div>
+      <div className="flex-1 overflow-auto">
+        <Outlet />
+      </div>
+    </div>
+  );
 };
 
 export default AdminLayout;

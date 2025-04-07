@@ -4,7 +4,7 @@ import { AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
 import useCartStore from "@/store/useCart";
 import useSearchStore from "@/store/useSearch";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import useUserStore from "@/store/useUser";
 
 interface NavBarProps {
@@ -15,6 +15,7 @@ const NavBar: React.FC<NavBarProps> = ({ toggle }) => {
   const { search, setSearch } = useSearchStore();
   const { isAuthenticated, user, logout } = useUserStore();
   const { cartItems } = useCartStore();
+  const navigate = useNavigate();
   const toggleFilterBar = () => {
     setIsOpen((prev) => !prev);
   };
@@ -27,6 +28,7 @@ const NavBar: React.FC<NavBarProps> = ({ toggle }) => {
             src="src\assets\Screenshot 2025-04-03 004924.png"
             alt="Logo"
             className="w-full h-12"
+            onClick={() => navigate("/")}
           />
         </div>
         {/* thanh tìm kiếm */}
@@ -83,7 +85,7 @@ const NavBar: React.FC<NavBarProps> = ({ toggle }) => {
                 {
                   user?.isAdmin && (
                     <li>
-                      <Link to="/admin">Quản lý</Link>
+                      <Link to="/admin/">Quản lý</Link>
                     </li>
                   )
                 }
