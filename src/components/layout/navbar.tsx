@@ -63,7 +63,7 @@ const NavBar: React.FC<NavBarProps> = ({ toggle }) => {
             {!isAuthenticated ? (
               <ul
                 tabIndex={0}
-                className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow shadow-gray-"
+                className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow shadow-gray-300"
               >
                 <li>
                   <Link to="/login">Đăng nhập</Link>
@@ -75,7 +75,7 @@ const NavBar: React.FC<NavBarProps> = ({ toggle }) => {
             ) : (
               <ul
                 tabIndex={0}
-                className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow shadow-gray-"
+                className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow shadow-gray-300"
               >
                 <li>
                   <Link to="/profile">Thông tin tài khoản</Link>
