@@ -39,6 +39,18 @@ const validate = async () => {
     throw error;
   }
 };
+const checkAdmin = async () => {
+  try {
+    // Calling the check-admin route secured with [Authorize(Roles = "Admin")]
+    const response = await Authapi.get("auth/check-admin", {
+      withCredentials: true,
+    });
+    console.log("Check admin response:", response);
+    return true;
+  } catch {
+    throw new Error("Unauthorized");
+  }
+};
 
 const logout = async () => {
   try {
@@ -52,4 +64,4 @@ const logout = async () => {
     return null;
   }
 };
-export { login, validate, logout };
+export { login, validate, logout, checkAdmin };

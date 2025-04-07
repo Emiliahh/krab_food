@@ -80,6 +80,13 @@ const NavBar: React.FC<NavBarProps> = ({ toggle }) => {
                 <li>
                   <Link to="/profile">Thông tin tài khoản</Link>
                 </li>
+                {
+                  user?.isAdmin && (
+                    <li>
+                      <Link to="/admin">Quản lý</Link>
+                    </li>
+                  )
+                }
                 <li>
                   <Link to="/order">Đơn hàng của tôi</Link>
                 </li>

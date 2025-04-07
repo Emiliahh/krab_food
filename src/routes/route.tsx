@@ -4,6 +4,7 @@ import HomeLayout from "../layouts/homeLayout";
 import Home from "../pages/homePage";
 import LoginPage from "@/pages/loginPage";
 import RegisterPage from "@/pages/registerPage";
+import AdminLayout from "@/layouts/adminLayout";
 
 export const routes = createBrowserRouter([
   {
@@ -21,6 +22,14 @@ export const routes = createBrowserRouter([
       {
         path: "/register",
         element: <RegisterPage />,
+      },
+      {
+        path: "/admin",
+        element: <AdminLayout />,
+        children: [{
+          index: true,
+          element: <div>Admin Page</div>,
+        }]
       },
     ],
   },
