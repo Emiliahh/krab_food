@@ -12,7 +12,7 @@ import {
 
 export function UnauthorizedAlertDialog() {
   const navigate = useNavigate();
-  const [open, setOpen] = useState(true); // Mở hộp thoại mặc định
+  const [open, setOpen] = useState(true); 
 
   const handleOk = () => {
     setOpen(false);

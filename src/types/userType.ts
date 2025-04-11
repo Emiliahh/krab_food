@@ -3,7 +3,7 @@ interface User {
   name: string;
   phone: string;
   email?: string;
-  isAdmin: boolean;
+  roles :string[];
 }
 interface UserRegistration extends User {
   password: string;

@@ -27,7 +27,7 @@ const NavBar: React.FC<NavBarProps> = ({ toggle }) => {
           <img
             src="src\assets\Screenshot 2025-04-03 004924.png"
             alt="Logo"
-            className="w-full h-12"
+            className="w-full h-12 cursor-pointer"
             onClick={() => navigate("/")}
           />
         </div>
@@ -83,7 +83,9 @@ const NavBar: React.FC<NavBarProps> = ({ toggle }) => {
                   <Link to="/profile">Thông tin tài khoản</Link>
                 </li>
                 {
-                  user?.isAdmin && (
+                  user?.roles.some((x: string) => {
+                    return x == "Admin" || x == "Staff";
+                  }) && (
                     <li>
                       <Link to="/admin/">Quản lý</Link>
                     </li>
