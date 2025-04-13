@@ -2,6 +2,7 @@ import { CartItemWithDetails } from "@/types/cartTypes";
 import PaginatedResponse from "@/types/paginatedRes";
 import { Category, ProductType } from "@/types/productType";
 import axios from "axios";
+import Authapi from "./protectedApi";
 
 const ProductApi = axios.create({
   baseURL: `http://localhost:5114/api/Product`,
@@ -70,4 +71,15 @@ const getCategoryList = async (): Promise<Category[] | null> => {
     throw error;
   }
 }
-export { getFoodList, getCardDetails, getCategoryList };
+const addProduct = async (product:ProductType)=>{
+  try{
+    const respone = await Authapi.post<ProductType>('/product/add', product);
+    return respone.data;
+
+  }catch(error){
+    console.error("Error adding product:", error);
+    throw error;
+  }
+}
+
+export { getFoodList, getCardDetails, getCategoryList, addProduct };
