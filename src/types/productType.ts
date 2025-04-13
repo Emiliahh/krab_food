@@ -10,6 +10,13 @@ interface ProductType extends MenuItemType {
   description?: string;
   categoryId: string;
 }
+interface UploadProductType {
+  name: string;
+  price: number;
+  image: File|null;
+  description: string;
+  categoryId: string;
+}
 const mockMenuItems: ProductType[] = [
   {
     id: "1",
@@ -68,5 +75,5 @@ const mockCategory: Category[] = [
   { id: "4", name: "Salad" },
   { id: "5", name: "Snacks" },
 ];
-export type { MenuItemType, ProductType, Category };
+export type { MenuItemType, ProductType, Category , UploadProductType };
 export { mockMenuItems, mockCategory };

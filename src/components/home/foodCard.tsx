@@ -1,4 +1,5 @@
 import {  ProductType } from "@/types/productType";
+import { formatCurrency } from "@/util/currencyFormater";
 
 interface FoodCartProps {
   food: ProductType;
@@ -19,7 +20,7 @@ export default function FoodCart({ food, onClick,setFocus }: FoodCartProps) {
       <div className="relative overflow-hidden rounded-t-md">
         <img
           onClick={handleClick}
-          src={food.image}
+          src={`${food.image}?t=${Date.now()}`}
           className="object-cover aspect-3/2 hover:scale-110 transition-transform duration-300"
         />
       </div>
@@ -33,10 +34,7 @@ export default function FoodCart({ food, onClick,setFocus }: FoodCartProps) {
           {food.name}
         </h1>
         <h2 className="text-md font-medium text-closet">
-          {food.price.toLocaleString("en-US", {
-            style: "currency",
-            currency: "USD",
-          })}
+          {formatCurrency(food.price)}
           <button
             onClick={handleClick}
             className="mt-4 px-6 py-1 font-medium text-sm w-full bg-closet text-white  rounded-full hover:bg-closet-light transition duration-300 cursor-pointer"

@@ -1,6 +1,6 @@
 import { CartItemWithDetails } from "@/types/cartTypes";
 import PaginatedResponse from "@/types/paginatedRes";
-import { Category, ProductType } from "@/types/productType";
+import { Category, ProductType, UploadProductType } from "@/types/productType";
 import axios from "axios";
 import Authapi from "./protectedApi";
 
@@ -70,16 +70,59 @@ const getCategoryList = async (): Promise<Category[] | null> => {
     console.error("Error fetching category list:", error);
     throw error;
   }
-}
-const addProduct = async (product:ProductType)=>{
-  try{
-    const respone = await Authapi.post<ProductType>('/product/add', product);
-    return respone.data;
-
-  }catch(error){
+};
+const addProduct = async (product: UploadProductType) => {
+  try {
+    const formData = new FormData();
+    formData.append("name", product.name);
+    formData.append("price", product.price.toString());
+    formData.append("description", product.description);
+    formData.append("categoryId", product.categoryId);
+    if (product.image) {
+      formData.append("image", product.image);
+    }
+    const response = await Authapi.post<ProductType>("product/add", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data", // Important for file upload
+      },
+    });
+    return response;
+  } catch (error) {
     console.error("Error adding product:", error);
     throw error;
   }
-}
+};
 
-export { getFoodList, getCardDetails, getCategoryList, addProduct };
+const upateProduct = async (product: UploadProductType, id: string) => {
+  try {
+    const formData = new FormData();
+    formData.append("name", product.name);
+    formData.append("price", product.price.toString());
+    formData.append("description", product.description);
+    formData.append("categoryId", product.categoryId);
+    if (product.image) {
+      formData.append("image", product.image);
+    }
+    const response = await Authapi.put<ProductType>(
+      `product/update/${id}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data", // Important for file upload
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    console.error("Error adding product:", error);
+    throw error;
+  }
+};
+
+export {
+  getFoodList,
+  getCardDetails,
+  getCategoryList,
+  addProduct,
+  upateProduct,
+};

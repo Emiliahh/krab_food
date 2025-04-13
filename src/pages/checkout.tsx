@@ -4,6 +4,7 @@ import useCartStore from "@/store/useCart";
 import { getCardDetails } from "@/services/productService";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
+import { formatCurrency } from "@/util/currencyFormater";
 
 const CheckOut = () => {
   const [selectedMethod, setSelectedMethod] = useState<"cod" | "qr_pay" | null>(
@@ -44,7 +45,7 @@ const CheckOut = () => {
     return display.reduce((acc, item) => acc + item.price * item.quantity, 0);
   }, [display]);
   return (
-    <div className="flex flex-col items-center bg-gray-100 h-screen">
+    <div className="flex flex-col items-center bg-gray-100 h-fit">
       {/* label part */}
       <div className="w-full py-5 bg-white flex items-center">
         <div>
@@ -201,9 +202,9 @@ const CheckOut = () => {
               <h2 className="text-sm ">Phí vận chuyển</h2>
               <h2 className="text-sm font-semibold text-closet">
                 {selectedShipment === "standard"
-                  ? "3đ"
+                  ? formatCurrency(30000)
                   : selectedShipment === "express"
-                  ? "5"
+                  ? formatCurrency(50000)
                   : "0đ"}
               </h2>
             </div>
@@ -211,18 +212,17 @@ const CheckOut = () => {
             {/* Total */}
             <div className="flex justify-between items-center pt-2 border-t border-gray-200">
               <h2 className="text-sm">Tổng tiền</h2>
-              <h2 className="text-sm font-bold text-closet">
-                {(
-                  totalPrice +
-                  (selectedShipment === "standard"
-                    ? 3
-                    : selectedShipment === "express"
-                    ? 5
-                    : 0)
-                ).toLocaleString("vi-VN", {
-                  style: "currency",
-                  currency: "VND",
-                })}
+              <h2 className="text-sm  font-bold text-closet">
+                <h2 className="text-sm font-bold text-closet">
+                  {formatCurrency(
+                    totalPrice +
+                      (selectedShipment === "standard"
+                        ? 30000
+                        : selectedShipment === "express"
+                        ? 50000
+                        : 0)
+                  )}
+                </h2>
               </h2>
             </div>
 

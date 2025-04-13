@@ -62,7 +62,7 @@ function Home() {
       {/* Đây là phần banner */}
       <img
         className="w-full h-96 rounded-md object-cover"
-        src="https://plus.unsplash.com/premium_photo-1694715585704-81111d19074d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8dmlldG5hbWVzZSUyMGZvb2R8ZW58MHx8MHx8fDA%3D"
+        src="src\assets\banner1.jpg"
       />
 
       <div className="flex justify-center gap-2 py-6 w-full ">
@@ -112,7 +112,10 @@ function Home() {
           key={focus.id}
           isOpen={isOpen}
           setIsOpen={setIsOpen}
-          product={focus}
+          product={{
+            ...focus,
+            image:`${focus.image}?t=${Date.now()}`,
+          }}
         />
       )}
       {/* paginate part */}
