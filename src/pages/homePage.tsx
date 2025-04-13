@@ -58,7 +58,7 @@ function Home() {
   });
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center px-52 py-3">
+    <div className="flex-1 flex flex-col items-center justify-center max-w-5xl py-3">
       {/* Đây là phần banner */}
       <img
         className="w-full h-96 rounded-md object-cover"

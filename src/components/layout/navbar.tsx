@@ -20,8 +20,8 @@ const NavBar: React.FC<NavBarProps> = ({ toggle }) => {
     setIsOpen((prev) => !prev);
   };
   return (
-    <nav className="flex flex-col w-full bg-white shadow-md sticky top-0 z-50">
-      <div className="flex justify-center px-4 sm:px-8 lg:px-52 items-center py-2 gap-20 ">
+    <nav className="flex flex-col w-full  bg-white shadow-md sticky top-0 z-50 items-center">
+      <div className="flex justify-center items-center py-2 gap-20  max-w-5xl w-full">
         {/* phần logo */}
         <div className="flex flex-row">
           <img
@@ -32,7 +32,7 @@ const NavBar: React.FC<NavBarProps> = ({ toggle }) => {
           />
         </div>
         {/* thanh tìm kiếm */}
-        <div className="flex  max-w-[520px] flex-row items-center flex-1 gap-5 pl-3 pr-1 py-1 rounded-full bg-light-gray border-none  text-gray-700 ">
+        <div className="flex  flex-row items-center flex-1 gap-5 pl-3 pr-1 py-1 rounded-full bg-light-gray border-none  text-gray-700 ">
           <Search size={23} strokeWidth={1.25} />
           <input
             placeholder="Search"
@@ -82,15 +82,13 @@ const NavBar: React.FC<NavBarProps> = ({ toggle }) => {
                 <li>
                   <Link to="/profile">Thông tin tài khoản</Link>
                 </li>
-                {
-                  user?.roles.some((x: string) => {
-                    return x == "Admin" || x == "Staff";
-                  }) && (
-                    <li>
-                      <Link to="/admin/">Quản lý</Link>
-                    </li>
-                  )
-                }
+                {user?.roles.some((x: string) => {
+                  return x == "Admin" || x == "Staff";
+                }) && (
+                  <li>
+                    <Link to="/admin/">Quản lý</Link>
+                  </li>
+                )}
                 <li>
                   <Link to="/order">Đơn hàng của tôi</Link>
                 </li>

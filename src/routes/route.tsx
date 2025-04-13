@@ -13,6 +13,7 @@ import ProtectedLayout from "@/layouts/protected";
 import AccountPage from "@/pages/accountPage";
 import OrderHistory from "@/pages/orderHistory";
 import ManagementLayout from "@/layouts/managementLayout";
+import CheckOut from "@/pages/checkout";
 
 export const routes = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ export const routes = createBrowserRouter([
             },
           ]
         }],
+      },
+      {
+        path:"checkout",
+        element:<CheckOut/>
       },
       {
         path: "login",

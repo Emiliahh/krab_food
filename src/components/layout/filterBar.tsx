@@ -48,7 +48,7 @@ const FilterBar: React.FC<FilterBarProps> = ({ toggle }) => {
       variants={filterBarVariants}
       initial="hidden"
       animate="visible"
-      className="flex items-center justify-center gap-20 p-2  border-t border-gray-200 text-sm "
+      className="flex items-center justify-center gap-20 p-2  w-full border-t border-gray-200 text-sm "
     >
       {/* Category Filter */}
       <div className="flex items-center gap-2">

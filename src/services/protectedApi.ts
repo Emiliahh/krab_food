@@ -24,7 +24,7 @@ Authapi.interceptors.response.use(
       const res = await axios.get("http://localhost:5114/api/auth/refresh", {
         withCredentials: true,
       });
-      localStorage.setItem("accessToken", res.data.token);
+      localStorage.setItem("token", res.data.token);
       return Authapi(orginalRequest);
     }
     return Promise.reject(error);

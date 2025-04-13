@@ -16,15 +16,9 @@ const HomeLayout = () => {
   //   return () => {};
   // }, [isOpen]);
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full items-center justify-center">
       <NavBar toggle={toggle} />
-      <div
-        className="flex-1 flex flex-col overflow-y-auto gap-5 [&::-webkit-scrollbar]:w-[1px]
-   [&::-webkit-scrollbar-track]:bg-gray-100
-   [&::-webkit-scrollbar-thumb]:bg-gray-300
-   dark:[&::-webkit-scrollbar-track]:bg-neutral-700
-   dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
-      >
+      <div className="flex-1 w-full items-center flex flex-col overflow-y-auto gap-5 [&::-webkit-scrollbar]:w-[1px] [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500">
         <div className="flex-1">
           <Outlet />
         </div>

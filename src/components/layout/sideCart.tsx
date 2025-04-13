@@ -8,6 +8,7 @@ import { formatCurrency } from "@/util/currencyFormater";
 import { CartItemCheck, CartItemWithDetails } from "@/types/cartTypes";
 import { useQuery } from "@tanstack/react-query";
 import { getCardDetails } from "@/services/productService";
+import { Link } from "react-router";
 const containerVariants = {
   initial: { x: "100%" },
   animate: {
@@ -150,8 +151,27 @@ export default function ShoppingCart({ toggle }: { toggle: () => void }) {
                   <Plus size={24} /> Thêm món
                 </span>
               </button>
-              <button className="bg-closet h-full text-sm text-white rounded-md py-2 px-4 flex-1">
-                Thanh toán
+              <button
+                className={`bg-closet h-full text-sm text-white rounded-md py-2 px-4 flex-1 ${
+                  countCheckedItems() === 0
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : ""
+                }`}
+                disabled={countCheckedItems() === 0}
+              >
+                {countCheckedItems() > 0 ? (
+                  <Link
+                    to="/checkout"
+                    className="w-full h-full flex items-center justify-center"
+                    style={{ textDecoration: "none" }}
+                  >
+                    Thanh toán
+                  </Link>
+                ) : (
+                  <span className="w-full h-full flex items-center justify-center">
+                    Thanh toán
+                  </span>
+                )}
               </button>
             </div>
           </div>

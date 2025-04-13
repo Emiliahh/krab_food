@@ -11,7 +11,8 @@ interface CartState {
     countCheckedItems: () => number;
     addItem: (item: CartItemCheck) => void;
     clearCart: () => void;
-    changeNote:(id:string, note:string)=>void
+    changeNote:(id:string, note:string)=>void;
+    getSelected: () => CartItemCheck[]
 }
 const useCartStore = create<CartState>()((set, get)=>({
     cartItems: [],
@@ -77,6 +78,9 @@ const useCartStore = create<CartState>()((set, get)=>({
             item.id === id ? { ...item, note: note } : item
         );
         return { cartItems };
-    })
+    }),
+    getSelected: () => {    
+        return get().cartItems.filter(item => item.checked);
+    }
 }))
 export default useCartStore;
