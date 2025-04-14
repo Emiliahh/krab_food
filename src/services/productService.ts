@@ -71,6 +71,15 @@ const getCategoryList = async (): Promise<Category[] | null> => {
     throw error;
   }
 };
+const deleteProduct = async (id: string) => {
+  try {
+    const response = await Authapi.delete(`product/delete/${id}`);
+    return response.data;
+  } catch (e) {
+    console.error("Error deleting product:", e);
+    throw e;
+  }
+};
 const addProduct = async (product: UploadProductType) => {
   try {
     const formData = new FormData();
@@ -125,4 +134,5 @@ export {
   getCategoryList,
   addProduct,
   upateProduct,
+  deleteProduct,
 };

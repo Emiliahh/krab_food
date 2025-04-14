@@ -14,6 +14,7 @@ import AccountPage from "@/pages/accountPage";
 import OrderHistory from "@/pages/orderHistory";
 import ManagementLayout from "@/layouts/managementLayout";
 import CheckOut from "@/pages/checkout";
+import PromoPage from "@/pages/admin/promoPage";
 
 export const routes = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ export const routes = createBrowserRouter([
           {
             path: "order",
             element: <OrderPage />,
+          },
+          {
+            path: "promo",
+            element: <PromoPage />,
           },
           {
             path: "account",

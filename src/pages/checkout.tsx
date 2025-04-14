@@ -5,16 +5,19 @@ import { getCardDetails } from "@/services/productService";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
 import { formatCurrency } from "@/util/currencyFormater";
+import useUserStore from "@/store/useUser";
+import { CreateOrderType } from "@/types/orderTypes";
+import { createOrder } from "@/services/orderService";
 
 const CheckOut = () => {
-  const [selectedMethod, setSelectedMethod] = useState<"cod" | "qr_pay" | null>(
-    "cod"
-  );
+  const [selectedMethod, setSelectedMethod] = useState<1 | 2>(1);
   const navigate = useNavigate();
+  const [note, setNote] = useState<string>("");
   const [selectedShipment, setSelectedShipment] = useState<
     "standard" | "express"
   >("standard");
   const { getSelected } = useCartStore();
+  const { user } = useUserStore();
   const { data: product } = useQuery({
     queryKey: ["foodCart", getSelected],
     queryFn: () => getCardDetails(getSelected().map((item) => item.id)),
@@ -25,6 +28,26 @@ const CheckOut = () => {
       navigate("/");
     }
   }, [getSelected, navigate]);
+  const handleSubmit = async () => {
+    const req: CreateOrderType = {
+      address: `${user?.name} - ${user?.phone} - ${user?.address}`,
+      note,
+      deliveryFee: selectedShipment === "standard" ? 30000 : 50000,
+      paymentMethod: selectedMethod,
+      createOrderDetailDtos: getSelected().map((item) => ({
+        productId: item.id,
+        quantity: item.quantity,
+        note: item.note || "",
+      })),
+    };
+    console.log(req);
+    const res = await createOrder(req);
+    if (res) {
+      alert("Đặt hàng thành công");
+    } else {
+      alert("Đặt hàng thất bại");
+    }
+  };
   const display = useMemo(() => {
     if (product) {
       const a = getSelected().map((item) => {
@@ -75,9 +98,9 @@ const CheckOut = () => {
             {/* payment part */}
             <div className="flex items-center gap-5">
               <button
-                onClick={() => setSelectedMethod("cod")}
+                onClick={() => setSelectedMethod(1)}
                 className={`px-4 py-3 flex-1 rounded border text-sm ${
-                  selectedMethod === "cod"
+                  selectedMethod === 1
                     ? "bg-closet text-white"
                     : "bg-white border-gray-300 text-gray-700"
                 }`}
@@ -86,9 +109,9 @@ const CheckOut = () => {
               </button>
 
               <button
-                onClick={() => setSelectedMethod("qr_pay")}
+                onClick={() => setSelectedMethod(2)}
                 className={`px-4 py-3 flex-1 text-sm rounded border ${
-                  selectedMethod === "qr_pay"
+                  selectedMethod === 2
                     ? "bg-closet text-white"
                     : "bg-white border-gray-300 text-gray-700"
                 }`}
@@ -103,14 +126,14 @@ const CheckOut = () => {
               </h1>
               <div className="border border-gray-300 rounded p-4 flex flex-col gap-1 cursor-pointer hover:border-closet transition">
                 <div className="flex justify-between items-center">
-                  <h2 className="font-semibold text-sm">Nguyễn Tùng Lúi</h2>
+                  <h2 className="font-semibold text-sm">{user?.name}</h2>
                   <button className="text-blue-600 text-sm hover:underline">
                     Thay đổi
                   </button>
                 </div>
-                <p className="text-sm text-gray-700">0123 456 789</p>
+                <p className="text-sm text-gray-700">{user?.phone}</p>
                 <p className="text-sm text-gray-700">
-                  Số 123, Đường Bottle Chop, Phường Thái Lọ, Quận 1, TP.HCM
+                  {user?.address || "thó lại"}
                 </p>
               </div>
             </div>
@@ -165,6 +188,8 @@ const CheckOut = () => {
             {/* note */}
             <h1 className="text-neutral-800 text-sm font-semibold">Ghi chú</h1>
             <textarea
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
               className="w-full h-24 border border-gray-300 rounded p-2 resize-none text-sm "
               placeholder="Nhập ghi chú cho đơn hàng của bạn ＞﹏＜"
             ></textarea>
@@ -227,7 +252,7 @@ const CheckOut = () => {
             </div>
 
             {/* Order Button */}
-            <button className="w-full mt-4 bg-closet text-white py-2 rounded text-sm font-medium hover:opacity-90 transition">
+            <button onClick={handleSubmit} className="w-full mt-4 bg-closet text-white py-2 rounded text-sm font-medium hover:opacity-90 transition">
               Đặt hàng
             </button>
           </div>

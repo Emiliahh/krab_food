@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Category, ProductType } from "@/types/productType";
 import { NotebookPen, Trash } from "lucide-react"; // update path as needed
 import EditProductDialog from "@/components/admin/editModal";
+import { deleteProduct } from "@/services/productService";
 
 interface ProductCardProps {
   product: ProductType;
@@ -9,16 +10,26 @@ interface ProductCardProps {
   onEdit?: () => void;
   onDelete?: () => void;
   categories: Category[];
+  refetch: () => void;
 }
 
 export default function ProductCard({
   product,
   categoryName,
-  onDelete,
   categories,
+  refetch,
 }: ProductCardProps) {
   const [openDialog, setOpenDialog] = useState(false);
-
+  const handleDelete = async () => {
+    const confirmed = window.confirm("Bạn có chắc muốn xóa món này?");
+    if (!confirmed) return;
+    try {
+      await deleteProduct(product.id); 
+      refetch(); 
+    } catch (error) {
+      console.error("Lỗi khi xóa:", error);
+    }
+  };
   return (
     <>
       <div className="flex items-start gap-4 p-4 bg-white border rounded-xl shadow-sm w-full">
@@ -55,7 +66,7 @@ export default function ProductCard({
               <NotebookPen className="w-4 h-4 text-black" />
             </button>
             <button
-              onClick={onDelete}
+              onClick={handleDelete}
               className="bg-red-700 hover:bg-red-800 p-2 rounded-full"
             >
               <Trash className="w-4 h-4 text-white" />
@@ -69,7 +80,10 @@ export default function ProductCard({
         categories={categories}
         open={openDialog}
         onClose={() => setOpenDialog(false)}
-        product={product}
+        product={{
+            ...product,
+            image:`${product.image}?t=${Date.now()}`
+        }}
       />
     </>
   );

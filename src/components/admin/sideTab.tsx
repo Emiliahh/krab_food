@@ -1,6 +1,7 @@
 import {
   ChartNoAxesColumnDecreasing,
   CircleArrowLeft,
+  Gift,
   LogOut,
   ShoppingBag,
   Soup,
@@ -11,6 +12,7 @@ import TabIcon from "./tabIcon";
 import { useLocation, useNavigate } from "react-router";
 import ButtonIcon from "./buttonIcon";
 import useUserStore from "@/store/useUser";
+
 
 const tabList = [
   {
@@ -24,6 +26,12 @@ const tabList = [
     displayname: "Đơn hàng",
     icon: ShoppingBag,
     path: "/order",
+  },
+  {
+    name: "promo",
+    displayname: "Khuyến mãi",
+    icon: Gift,
+    path: "/promo",
   },
   {
     name: "account",
@@ -49,9 +57,9 @@ function SideTab() {
 
   return (
     <div className="flex flex-col w-64 h-screen bg-white border-r border-gray-300 py-4">
-      <div className="px-4 mb-4 flex-shrink-0">
+      <div className="px-4 mb-2 flex-shrink-0">
         <img
-          className="w-full"
+          className="w-24 "
           src="https://img.freepik.com/premium-vector/chef-icon-with-tray-food-hand_602006-191.jpg"
           alt="Chef Icon"
         />

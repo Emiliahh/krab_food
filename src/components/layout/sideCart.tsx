@@ -52,8 +52,8 @@ export default function ShoppingCart({ toggle }: { toggle: () => void }) {
         return {
           ...item,
           ...productDetails,
-          name: productDetails?.name || "", // Ensure name is a string
-          price: productDetails?.price || 0, // Ensure price is a number
+          name: productDetails?.name || "", 
+          price: productDetails?.price || 0, 
         };
       });
       setCartDisplay(cartItemsWithDetails);
@@ -165,11 +165,11 @@ export default function ShoppingCart({ toggle }: { toggle: () => void }) {
                     className="w-full h-full flex items-center justify-center"
                     style={{ textDecoration: "none" }}
                   >
-                    Thanh toán
+                    Đặt hàng
                   </Link>
                 ) : (
                   <span className="w-full h-full flex items-center justify-center">
-                    Thanh toán
+                    Đặt hàng
                   </span>
                 )}
               </button>

@@ -12,7 +12,7 @@ const ProductPage = () => {
 
   const { data: product, refetch } = useQuery({
     queryKey: ["foodList", search, selected],
-    queryFn: () => getFoodList(1, 10, true, search, selected),
+    queryFn: () => getFoodList(1, 100, true, search, selected),
   });
   const { data: categories } = useQuery({
     queryKey: ["categories"],
@@ -81,6 +81,7 @@ const ProductPage = () => {
         <div className="flex flex-col gap-4 w-full">
           {product?.data.map((item) => (
             <ProductCard
+              refetch={refetch}
               categories={categories ?? []}
               key={item.id}
               product={item}

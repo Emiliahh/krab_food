@@ -57,6 +57,14 @@ const AddModal = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (formData.name === "") {
+      alert("Tên món không được để trống");
+      return;
+    }
+    if (formData.categoryId === "") {
+      alert("Danh mục không được để trống");
+      return;
+    }
     const res = await addProduct(formData);
     if (res) {
       alert("Thêm sản phẩm thành công");
