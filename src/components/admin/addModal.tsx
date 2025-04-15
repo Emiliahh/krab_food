@@ -9,6 +9,7 @@ import { useRef, useState } from "react";
 import Category from "@/types/categoryType";
 import { addProduct } from "@/services/productService";
 import { UploadProductType } from "@/types/productType";
+import { toast } from "react-toastify";
 
 interface EditProductDialogProps {
   open: boolean;
@@ -57,17 +58,27 @@ const AddModal = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    let hasError = false;
     if (formData.name === "") {
-      alert("Tên món không được để trống");
-      return;
+      toast.error("Tên món không được để trống");
+      hasError = true;
     }
     if (formData.categoryId === "") {
-      alert("Danh mục không được để trống");
-      return;
+      toast.error("Vui lòng chọn danh mục");
+      hasError = true;
     }
+    if (formData.price <= 0) {
+      toast.error("Giá bán không hợp lệ");
+      hasError = true;
+    }
+    if (formData.image === null) {
+      toast.error("Vui lòng chọn hình ảnh");
+      hasError = true;
+    }
+    if (hasError) return;
     const res = await addProduct(formData);
     if (res) {
-      alert("Thêm sản phẩm thành công");
+      toast.success("Thêm món thành công");
       refetch();
     }
     onClose();
