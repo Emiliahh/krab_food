@@ -1,6 +1,7 @@
 import useUserStore from "@/store/useUser";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 const LoginPage: React.FC = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -11,11 +12,12 @@ const LoginPage: React.FC = () => {
     event.preventDefault();
     const success = await login(phoneNumber, password);
     if (success) {
-      alert("Đăng nhập thành công!");
+      toast.success("Đăng nhập thành công!");
       console.log(user);
       navigate("/");
     } else {
-      alert("Đăng nhập thất bại!");
+      toast.error("Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.");
+      setPassword("");
     }
   };
 

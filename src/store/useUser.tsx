@@ -84,7 +84,7 @@ const useUserStore = create<UserState>((set, get) => ({
       set({
         error: error?.message || "Logout failed",
       });
-    } finally {
+    } finally { 
       set({ isLoading: false });
     }
   },

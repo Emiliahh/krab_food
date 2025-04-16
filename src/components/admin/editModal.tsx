@@ -9,6 +9,7 @@ import { Category, ProductType, UploadProductType } from "@/types/productType"; 
 import { Check, FileUp } from "lucide-react";
 import { upateProduct } from "@/services/productService";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-toastify";
 
 interface EditProductDialogProps {
   open: boolean;
@@ -47,7 +48,7 @@ const EditProductDialog = ({
     };
     const res = await upateProduct(data, product.id);
     if (res) {
-      alert("Cập nhập sản phẩm thành công");
+      toast.success("cập nhập thành công")
       queryClient.invalidateQueries({queryKey:["foodList"]});
       onClose();
     } else {
