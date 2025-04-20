@@ -10,6 +10,7 @@ import { formatCurrency } from "@/util/currencyFormater";
 import { Minus, Plus, ShoppingCart } from "lucide-react";
 
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 export function DialogDemo({
   isOpen,
@@ -30,7 +31,8 @@ export function DialogDemo({
       note: note,
       checked: false,
     });
-    setIsOpen(false);
+    toast.success("thêm thành công");
+    // setIsOpen(false);
   };
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -83,7 +85,7 @@ export function DialogDemo({
             {/* description section */}
             <div className="px-4">
               <h2 className=" text-gray-500 font-normal text-sm">
-                {product.description ||""}
+                {product.description || ""}
               </h2>
             </div>
           </div>
@@ -104,7 +106,9 @@ export function DialogDemo({
             <div className="px-4 py-2 flex justify-between items-center">
               <div>
                 <h1 className="text-[#808080]">Tổng cộng</h1>
-                <h1 className="text-closet font-semibold">{formatCurrency(product.price*quantity)}</h1>
+                <h1 className="text-closet font-semibold">
+                  {formatCurrency(product.price * quantity)}
+                </h1>
               </div>
               <div className="flex gap-3">
                 <button className=" cursor-pointer rounded-sm text-sm text-white bg-closet px-5 py-2 font-semibold">

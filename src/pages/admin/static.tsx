@@ -1,8 +1,4 @@
 const StaticPage = () => {
-  return (
-    <div className="flex justify-center items-center min-h-screen">
-      <h1>đây là trang thống kê</h1>
-    </div>
-  );
+  return <div className="flex justify-center p-3 min-h-screen"></div>;
 };
 export default StaticPage;

@@ -8,6 +8,10 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "react-toastify";
 const OrderPage = () => {
+  const [selectedStatus, setSelectedStatus] = useState<OrderStatus | null>(
+    null
+  );
+  console.log(Object.values(OrderStatus));
   const { data: product, refetch } = useQuery({
     queryKey: ["orderList"],
     queryFn: () => getOrder(),
@@ -37,6 +41,7 @@ const OrderPage = () => {
   return (
     <div className="flex flex-col items-center p-2 gap-10">
       {/* add search bar */}
+
       <div className="flex w-full max-w-6xl items-center gap-6 ">
         <select className="bg-gray-100 text-black rounded px-4 py-2">
           <option value="">Tất cả</option>
@@ -57,6 +62,38 @@ const OrderPage = () => {
         <label>Đến</label>
         <DatePickerDemo date={toDate || new Date()} setDate={setToDate} />
       </div>
+      <div className="flex flex-row gap-2 w-full max-w-6xl items-center">
+        <button
+          key="all"
+          onClick={() => setSelectedStatus(null)}
+          className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+            selectedStatus === null
+              ? "bg-closet text-white"
+              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+          }`}
+        >
+          Tất cả
+        </button>
+
+        {Object.values(OrderStatus)
+          .filter((v) => typeof v === "string")
+          .map((statusKey) => {
+            const status = OrderStatus[statusKey as keyof typeof OrderStatus]; 
+            return (
+              <button
+                key={status}
+                onClick={() => setSelectedStatus(status)}
+                className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                  selectedStatus === status
+                    ? "bg-closet text-white"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
+              >
+                {statusLabel[status]}
+              </button>
+            );
+          })}
+      </div>
       <div className="overflow-x-auto w-full max-w-6xl rounded-box border border-base-content/10 bg-base-100 p-2">
         <table className="table table-sm ">
           <thead className="border-b border-base-content/10">
@@ -67,6 +104,7 @@ const OrderPage = () => {
               <th>Thời gian đặt</th>
               <th>Trạng thái</th>
               <th>Tổng tiền</th>
+              <th>Thanh toán</th>
               <th>Chi tiết</th>
             </tr>
           </thead>
@@ -86,13 +124,7 @@ const OrderPage = () => {
                 <td>{new Date(item.orderTime).toLocaleString()}</td>
                 <td>
                   <div className="flex items-center justify-between gap-2 w-full">
-                    <div
-                      className={`badge p-2 ${
-                        item.status === OrderStatus.Delivered
-                          ? "badge-info"
-                          : "badge-accent"
-                      } flex-1 text-center`}
-                    >
+                    <div className={`badge p-2 flex-1 text-center text-xs`}>
                       {statusLabel[item.status]}
                     </div>
                     <OrderStatusModal
@@ -104,8 +136,9 @@ const OrderPage = () => {
                   </div>
                 </td>
                 <td>{formatCurrency(item.totalPrice)}</td>
+                <td>{item.isPaid ? "có" : "chưa"}</td>
                 <td>
-                  <OrderDetailModal></OrderDetailModal>
+                  <OrderDetailModal data={item}></OrderDetailModal>
                 </td>
               </tr>
             ))}

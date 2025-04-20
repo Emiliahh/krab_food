@@ -3,7 +3,10 @@ import Authapi from "./protectedApi";
 
 const createOrder = async (data: CreateOrderType) => {
   try {
-    const response = await Authapi.post<CreateOrderType>("order/create", data);
+    const response = await Authapi.post<{
+      orderId: string;
+      totalPrice: number;
+    }>("order/create", data);
     return response.data;
   } catch (e) {
     console.error("Error creating order:", e);

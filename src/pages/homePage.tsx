@@ -95,7 +95,7 @@ function Home() {
       {isLoading ? (
         <LoadingSpinner />
       ) : (
-        <div className="w-full grid grid-cols-4 gap-5">
+        <div className="w-full grid grid-cols-4 gap-3">
           {(products?.data || []).map((item) => (
             <FoodCart
               key={item.id}

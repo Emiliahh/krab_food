@@ -1,6 +1,6 @@
 interface User {
   address?: string;
-  name: string;
+  fullname: string;
   phone: string;
   email?: string;
   roles :string[];

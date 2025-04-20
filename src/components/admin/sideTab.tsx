@@ -81,7 +81,7 @@ function SideTab() {
           Icon={CircleArrowLeft}
           onClick={() => navigate("/")}
         />
-        <ButtonIcon name={user?.name ?? "em sv"} Icon={User} />
+        <ButtonIcon name={user?.fullname ?? "em sv"} Icon={User} />
         <ButtonIcon name="Đăng xuất" Icon={LogOut} onClick={() => logout()} />
       </div>
     </div>

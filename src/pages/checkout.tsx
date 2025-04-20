@@ -8,6 +8,8 @@ import { formatCurrency } from "@/util/currencyFormater";
 import useUserStore from "@/store/useUser";
 import { CreateOrderType } from "@/types/orderTypes";
 import { createOrder } from "@/services/orderService";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const CheckOut = () => {
   const [selectedMethod, setSelectedMethod] = useState<1 | 2>(1);
@@ -16,7 +18,7 @@ const CheckOut = () => {
   const [selectedShipment, setSelectedShipment] = useState<
     "standard" | "express"
   >("standard");
-  const { getSelected } = useCartStore();
+  const { getSelected, clearSelected } = useCartStore();
   const { user } = useUserStore();
   const { data: product } = useQuery({
     queryKey: ["foodCart", getSelected],
@@ -30,9 +32,9 @@ const CheckOut = () => {
   }, [getSelected, navigate]);
   const handleSubmit = async () => {
     const req: CreateOrderType = {
-      address: `${user?.name} - ${user?.phone} - ${user?.address}`,
+      address: `${user?.fullname} - ${user?.phone} - ${user?.address}`,
       note,
-      deliveryFee: selectedShipment === "standard" ? 30000 : 50000,
+      deliveryFee: selectedShipment === "standard" ? 1000 : 2000,
       paymentMethod: selectedMethod,
       createOrderDetailDtos: getSelected().map((item) => ({
         productId: item.id,
@@ -40,14 +42,44 @@ const CheckOut = () => {
         note: item.note || "",
       })),
     };
+
     console.log(req);
-    const res = await createOrder(req);
-    if (res) {
-      alert("Đặt hàng thành công");
-    } else {
-      alert("Đặt hàng thất bại");
+
+    try {
+      const res = await createOrder(req);
+      if (res) {
+        toast.success("Đặt hàng thành công");
+        clearSelected();
+        if (selectedMethod === 2 && res?.orderId && res?.totalPrice) {
+          try {
+            const response = await axios.post(
+              "http://localhost:5114/api/order",
+              {
+                orderId: res.orderId,
+                amount: res.totalPrice,
+              }
+            );
+
+            if (response.status >= 200 && response.status < 300) {
+              const data = response.data;
+              window.location.href = data.paymentUrl;
+            } else {
+              toast.error("Không thể tạo liên kết thanh toán");
+            }
+          } catch (paymentError) {
+            toast.error("Có lỗi xảy ra khi tạo liên kết thanh toán");
+            console.error(paymentError);
+          }
+        } else {
+          navigate("/");
+        }
+      }
+    } catch (error) {
+      toast.error("Có lỗi xảy ra khi đặt hàng");
+      console.error(error);
     }
   };
+
   const display = useMemo(() => {
     if (product) {
       const a = getSelected().map((item) => {
@@ -86,7 +118,7 @@ const CheckOut = () => {
       {/* content part */}
       <div className="flex-1 w-full flex p-5 space-x-3 justify-center shadow-xs">
         {/* first part */}
-        <div className="w-full max-w-3xl h-fit bg-white rounded-sm border border-gray-300 flex flex-col">
+        <div className="w-full max-w-2xl h-fit bg-white rounded-sm border border-gray-300 flex flex-col">
           <div className="w-full border-b border-gray-300 px-4 py-3">
             <h1 className="text-base font-semibold">Thông tin giao hàng</h1>
           </div>
@@ -126,7 +158,7 @@ const CheckOut = () => {
               </h1>
               <div className="border border-gray-300 rounded p-4 flex flex-col gap-1 cursor-pointer hover:border-closet transition">
                 <div className="flex justify-between items-center">
-                  <h2 className="font-semibold text-sm">{user?.name}</h2>
+                  <h2 className="font-semibold text-sm">{user?.fullname}</h2>
                   <button className="text-blue-600 text-sm hover:underline">
                     Thay đổi
                   </button>
@@ -197,7 +229,7 @@ const CheckOut = () => {
         </div>
 
         {/* second part */}
-        <div className="w-80 h-96 bg-white p-4 rounded-sm border border-closet shadow-xs flex flex-col justify-between">
+        <div className="w-72 h-96 bg-white p-4 rounded-sm border border-closet shadow-xs flex flex-col justify-between">
           <h2 className="w-full font-medium text-base">Đơn hàng </h2>
           <ul className="flex flex-1 flex-col overflow-auto w-full border-b border-gray-300 py-4">
             {display.map((item) => (
@@ -252,7 +284,10 @@ const CheckOut = () => {
             </div>
 
             {/* Order Button */}
-            <button onClick={handleSubmit} className="w-full mt-4 bg-closet text-white py-2 rounded text-sm font-medium hover:opacity-90 transition">
+            <button
+              onClick={handleSubmit}
+              className="w-full mt-4 bg-closet text-white py-2 rounded text-sm font-medium hover:opacity-90 transition"
+            >
               Đặt hàng
             </button>
           </div>

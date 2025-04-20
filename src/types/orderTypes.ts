@@ -27,6 +27,7 @@ interface OrderTypes {
   deliveryTime: string;
   note: string;
   customerName: string;
+  isPaid: boolean;
   orderDetails: OrderDetail[];
 }
 

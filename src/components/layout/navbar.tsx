@@ -59,7 +59,7 @@ const NavBar: React.FC<NavBarProps> = ({ toggle }) => {
               {!isAuthenticated ? (
                 <span className="text-sm">Đăng nhập/Đăng ký</span>
               ) : (
-                <span className="text-sm">{user?.name}</span>
+                <span className="text-sm">{user?.fullname}</span>
               )}
             </div>
             {!isAuthenticated ? (

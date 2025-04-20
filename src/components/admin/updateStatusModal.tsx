@@ -20,14 +20,10 @@ import { useState } from "react";
 
 // Define valid status transitions for each status
 const validTransitions: Record<OrderStatus, OrderStatus[]> = {
-  [OrderStatus.Pending]: [
-    OrderStatus.Delivered,
-    OrderStatus.Cancel,
-    OrderStatus.Delivering,
-  ],
+  [OrderStatus.Pending]: [OrderStatus.Cancel, OrderStatus.Delivering],
   [OrderStatus.Delivered]: [],
-  [OrderStatus.Delivering]: [OrderStatus.Cancel,OrderStatus.Delivered], 
-  [OrderStatus.Cancel]: [], 
+  [OrderStatus.Delivering]: [OrderStatus.Cancel, OrderStatus.Delivered],
+  [OrderStatus.Cancel]: [],
 };
 
 export default function OrderStatusModal({
@@ -48,17 +44,15 @@ export default function OrderStatusModal({
     setOpen(false);
   };
 
-  // Get valid transitions for current status
   const availableStatuses = validTransitions[defaultStatus];
 
-  // Disable save button if no valid transitions or same status selected
   const disableSave =
     availableStatuses.length === 0 || selected === defaultStatus;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Đổi trạng thái</Button>
+        <Button variant="outline">Cập nhập</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md ">
         <DialogHeader>

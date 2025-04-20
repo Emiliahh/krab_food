@@ -78,7 +78,7 @@ const ProductPage = () => {
         </div>
 
         {/* Product list */}
-        <div className="flex flex-col gap-4 w-full">
+        <div className="flex flex-col gap-2 w-full">
           {product?.data.map((item) => (
             <ProductCard
               refetch={refetch}

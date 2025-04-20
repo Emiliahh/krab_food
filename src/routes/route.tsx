@@ -15,6 +15,8 @@ import OrderHistory from "@/pages/orderHistory";
 import ManagementLayout from "@/layouts/managementLayout";
 import CheckOut from "@/pages/checkout";
 import PromoPage from "@/pages/admin/promoPage";
+import Pay from "@/pages/test";
+import PaymentResult from "@/pages/Success";
 
 export const routes = createBrowserRouter([
   {
@@ -23,23 +25,26 @@ export const routes = createBrowserRouter([
     children: [
       {
         element: <HomeLayout />,
-        children: [{ index: true, element: <Home /> }, {
-          element:<ProtectedLayout />,
-          children: [
-            {
-              path:"profile",
-              element:<AccountPage />
-            },
-            {
-              path:"order",
-              element:<OrderHistory />
-            },
-          ]
-        }],
+        children: [
+          { index: true, element: <Home /> },
+          {
+            element: <ProtectedLayout />,
+            children: [
+              {
+                path: "profile",
+                element: <AccountPage />,
+              },
+              {
+                path: "order",
+                element: <OrderHistory />,
+              },
+            ],
+          },
+        ],
       },
       {
-        path:"checkout",
-        element:<CheckOut/>
+        path: "checkout",
+        element: <CheckOut />,
       },
       {
         path: "login",
@@ -48,6 +53,14 @@ export const routes = createBrowserRouter([
       {
         path: "register",
         element: <RegisterPage />,
+      },
+      {
+        path: "test",
+        element: <Pay />,
+      },
+      {
+        path: "success",
+        element: <PaymentResult />,
       },
       {
         path: "admin",
@@ -61,6 +74,7 @@ export const routes = createBrowserRouter([
             path: "order",
             element: <OrderPage />,
           },
+
           {
             path: "promo",
             element: <PromoPage />,

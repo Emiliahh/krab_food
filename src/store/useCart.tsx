@@ -14,6 +14,8 @@ interface CartState {
   clearCart: () => void;
   changeNote: (id: string, note: string) => void;
   getSelected: () => CartItemCheck[];
+  removeSelected: () => void;
+  clearSelected: () => void;
 }
 const useCartStore = create<CartState>()(
   persist(
@@ -88,6 +90,10 @@ const useCartStore = create<CartState>()(
         }),
       clearCart: () => set({ cartItems: [] }),
 
+      clearSelected: () =>
+        set((state) => ({
+          cartItems: state.cartItems.filter((item) => !item.checked),
+        })),
       changeNote: (id: string, note: string) =>
         set((state) => {
           const cartItems = state.cartItems.map((item) =>
@@ -97,6 +103,11 @@ const useCartStore = create<CartState>()(
         }),
       getSelected: () => {
         return get().cartItems.filter((item) => item.checked);
+      },
+      removeSelected: () => {
+        set((state) => {
+          return { cartItems: state.cartItems.filter((item) => !item.checked) };
+        });
       },
     }),
     {
