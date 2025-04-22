@@ -55,12 +55,6 @@ enum PaymentMethod {
   Cash = 1,
   QR_Pay = 2,
 }
-export type {
-  CreateOrderType,
-  CreateOrderDetailType,
-  PaymentMethod,
-  OrderDetail,
-  OrderTypes,
-};
-export { OrderStatus };
+export type { CreateOrderType, CreateOrderDetailType, OrderDetail, OrderTypes };
+export { OrderStatus, PaymentMethod };
 export { statusLabel };

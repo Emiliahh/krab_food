@@ -56,15 +56,15 @@ const ManagementLayout = () => {
       </div>
     );
   }
-  if (error) {
+  if (error&&!isLoading) {
     return <UnauthorizedAlertDialog />;
   }
   return (
-    <div className="flex overflow-hidden h-screen">
+    <div className="flex h-screen overflow-hidden">
       <div className="sticky top-0 z-10">
         <SideTab />
       </div>
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 h-screen overflow-y-auto">
         <Outlet />
       </div>
     </div>
