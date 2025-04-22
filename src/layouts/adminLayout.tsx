@@ -9,7 +9,7 @@ const AdminLayout = () => {
     queryKey: ["checkAdmin"],
     queryFn: () => checkAdmin(),
     retry: false,
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     staleTime: 5 * 60 * 1000,
   });
 

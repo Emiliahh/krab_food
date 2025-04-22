@@ -14,7 +14,7 @@ import AccountPage from "@/pages/accountPage";
 import OrderHistory from "@/pages/orderHistory";
 import ManagementLayout from "@/layouts/managementLayout";
 import CheckOut from "@/pages/checkout";
-import PromoPage from "@/pages/admin/promoPage";
+// import PromoPage from "@/pages/admin/promoPage";
 import Pay from "@/pages/test";
 import PaymentResult from "@/pages/Success";
 
@@ -75,10 +75,10 @@ export const routes = createBrowserRouter([
             element: <OrderPage />,
           },
 
-          {
-            path: "promo",
-            element: <PromoPage />,
-          },
+          // {
+          //   path: "promo",
+          //   element: <PromoPage />,
+          // },
           {
             path: "account",
             element: <CustomerPage />,

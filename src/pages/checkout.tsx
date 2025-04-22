@@ -204,7 +204,7 @@ const CheckOut = () => {
               </button>
             </div>
             {/* vouncher */}
-            <h1 className="text-neutral-800 text-sm font-semibold">
+            {/* <h1 className="text-neutral-800 text-sm font-semibold">
               Mã giảm giá
             </h1>
             <div className="flex items-center gap-5">
@@ -216,7 +216,7 @@ const CheckOut = () => {
               <button className="bg-closet text-white rounded px-6 h-10 text-sm">
                 Áp dụng
               </button>
-            </div>
+            </div> */}
             {/* note */}
             <h1 className="text-neutral-800 text-sm font-semibold">Ghi chú</h1>
             <textarea

@@ -78,4 +78,36 @@ const logout = async () => {
     return null;
   }
 };
-export { login, validate, logout, checkAcess ,checkAdmin };
+
+// ➕ Thêm user (đăng ký)
+const register = async (
+  email: string,
+  password: string,
+  fullName: string,
+  phone: string
+) => {
+  try {
+    const response = await api.post("/register", {
+        email,
+        password,
+        fullName,
+        phone,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error registering user:", error);
+    throw error;
+  }
+};
+
+const getUsers = async () : Promise<User[]> => {
+    const response = await Authapi.get<User[]>("/User/getuser"); // endpoint API backend
+    return response.data;
+};
+
+// const deleteUser = async (id: number) => {
+//     const res = await axios.delete();
+//     return res.data;
+// };
+
+export { login, validate, logout, checkAcess ,checkAdmin , register, getUsers};
