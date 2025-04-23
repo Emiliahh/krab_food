@@ -1,5 +1,6 @@
 import { CreateOrderType, OrderStatus, OrderTypes } from "@/types/orderTypes";
 import Authapi from "./protectedApi";
+import PaginatedResponse from "@/types/paginatedRes";
 
 const createOrder = async (data: CreateOrderType) => {
   try {
@@ -13,9 +14,36 @@ const createOrder = async (data: CreateOrderType) => {
     throw e;
   }
 };
-const getOrder = async () => {
+const GetOrdeUser = async (id: number) => {
   try {
-    const response = await Authapi.get<OrderTypes[]>(`order/`);
+    if (id < 1 || id > 4) {
+      throw new Error("Invalid order status ID");
+    }
+    const response = await Authapi.get<OrderTypes[]>(
+      `/order/userOrder/?status=${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching order:", error);
+    throw error;
+  }
+};
+const getOrder = async (
+  id: number,
+  page: number = 1,
+  pageSize: number = 10
+) => {
+  try {
+    const response = await Authapi.get<PaginatedResponse<OrderTypes>>(
+      `order/`,
+      {
+        params: {
+          status: id,
+          page,
+          pageSize,
+        },
+      }
+    );
     return response.data;
   } catch (e) {
     console.error("Error getting order:", e);
@@ -41,5 +69,22 @@ const updateOrderStatus = async (id: string, status: number) => {
     throw e;
   }
 };
+const UserCancelOrder = async (id: string) => {
+  try {
+    const response = await Authapi.post(`order/cancel`, null, {
+      params: { orderId: id },
+    });
+    return response.data;
+  } catch (e) {
+    console.error("Error updating order status:", e);
+    throw e;
+  }
+};
 
-export { createOrder, getOrder , updateOrderStatus };
+export {
+  createOrder,
+  getOrder,
+  updateOrderStatus,
+  GetOrdeUser,
+  UserCancelOrder,
+};
