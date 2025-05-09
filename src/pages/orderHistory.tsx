@@ -15,7 +15,6 @@ const OrderHistory = () => {
     queryFn: () => GetOrdeUser(selectedStatus),
     refetchOnWindowFocus: false,
   });
-
   return (
     <div className="w-full p-5 flex justify-center min-h-screen bg-gray-50">
       <div className="w-full max-w-5xl flex flex-col gap-6">
@@ -49,7 +48,7 @@ const OrderHistory = () => {
           </div>
         )}
         {!isLoading && data?.length === 0 && (
-          <div className="alert alert-info shadow mt-4">
+          <div className="alert bg-closet text-white shadow mt-4">
             <span>Không có đơn hàng nào trong trạng thái này.</span>
           </div>
         )}

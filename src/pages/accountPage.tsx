@@ -1,34 +1,65 @@
-import { UpdateUser } from "@/services/userService";
+import { UpdateUser, UpdateUserPassword } from "@/services/userService";
 import useUserStore from "@/store/useUser";
 import { Save, KeyRound } from "lucide-react";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
 const AccountPage = () => {
-  const { user } = useUserStore();
-  const [updateUser,setUpdate] = useState<UpdateUser>({
+  const { user, validate } = useUserStore();
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [updateUser, setUpdate] = useState<UpdateUser>({
     fullname: user?.fullname,
     phone: user?.phone,
     address: user?.address,
-  })
+  });
   const handleUpdate = async () => {
     try {
       const response = await UpdateUser(updateUser);
       console.log("Cập nhật thành công:", response);
+      await validate();
       const res = await UpdateUser(updateUser);
-      if(res){
+      if (res) {
         toast.success("Cập nhật thành công");
       }
     } catch (error) {
       toast.error("Cập nhật thất bại");
       console.error("Lỗi khi cập nhật:", error);
     }
-  }
+  };
   const updateUserInfo = (field: string, value: string) => {
     setUpdate((prev) => ({
       ...prev,
       [field]: value,
     }));
+  };
+  const handleChangePassword = async () => {
+    const isValidPassword = (password: string): boolean => {
+      const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+      return regex.test(password);
+    };
+    if (newPassword !== confirmPassword) {
+      toast.error("Mật khẩu không khớp");
+      return;
+    }
+    if (!isValidPassword(newPassword)) {
+      toast.error(
+        "Mật khẩu mới phải có ít nhất 8 ký tự, bao gồm chữ hoa, số và ký tự đặc biệt"
+      );
+      return;
+    }
+    try {
+      const response = await UpdateUserPassword({
+        oldPassword: oldPassword,
+        newPassword: newPassword,
+      });
+      console.log("Cập nhật mật khẩu thành công:", response);
+      toast.success("Cập nhật mật khẩu thành công");
+    } catch (error) {
+      toast.error("Cập nhật mật khẩu thất bại");
+      console.error("Lỗi khi cập nhật mật khẩu:", error);
+    }
   };
 
   return (
@@ -82,7 +113,10 @@ const AccountPage = () => {
             />
           </div>
 
-          <button onClick={()=>handleUpdate()} className="flex items-center gap-2 bg-closet hover:bg-red-700 text-white px-4 py-2 rounded">
+          <button
+            onClick={() => handleUpdate()}
+            className="flex items-center gap-2 bg-closet hover:bg-red-700 text-white px-4 py-2 rounded"
+          >
             <Save className="w-4 h-4" />
             Lưu thay đổi
           </button>
@@ -94,6 +128,8 @@ const AccountPage = () => {
             <label className="block mb-1 font-medium">Mật khẩu hiện tại</label>
             <input
               type="password"
+              onChange={(e) => setOldPassword(e.target.value)}
+              value={oldPassword}
               placeholder="Nhập mật khẩu hiện tại"
               className="w-md  border border-gray-300 rounded px-3 py-2"
             />
@@ -104,6 +140,8 @@ const AccountPage = () => {
             <input
               type="password"
               placeholder="Nhập mật khẩu mới"
+              onChange={(e) => setNewPassword(e.target.value)}
+              value={newPassword}
               className="w-full border border-gray-300 rounded px-3 py-2"
             />
           </div>
@@ -113,13 +151,15 @@ const AccountPage = () => {
               Xác nhận mật khẩu mới
             </label>
             <input
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              value={confirmPassword}
               type="password"
               placeholder="Nhập lại mật khẩu mới"
               className="w-full border border-gray-300 rounded px-3 py-2"
             />
           </div>
 
-          <button className="flex items-center gap-2 bg-closet hover:bg-red-700 text-white px-4 py-2 rounded">
+          <button onClick={handleChangePassword} className="flex items-center gap-2 bg-closet hover:bg-red-700 text-white px-4 py-2 rounded">
             <KeyRound className="w-4 h-4" />
             Đổi mật khẩu
           </button>
@@ -128,6 +168,5 @@ const AccountPage = () => {
     </div>
   );
 };
-
 
 export default AccountPage;

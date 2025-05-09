@@ -36,7 +36,7 @@ export function DialogDemo({
   };
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="sm:max-w-[562px] sm:max-h-[650px] [&>button]:hidden p-0 rounded-md">
+      <DialogContent className="sm:max-w-[562px] sm:max-h-[760px] [&>button]:hidden p-0 rounded-md">
         <DialogTitle className="sr-only">Food Details</DialogTitle>
         <DialogDescription className="sr-only">
           This is a description of the food item. It contains all the details
@@ -111,13 +111,14 @@ export function DialogDemo({
                 </h1>
               </div>
               <div className="flex gap-3">
-                <button className=" cursor-pointer rounded-sm text-sm text-white bg-closet px-5 py-2 font-semibold">
+                {/* <button className=" cursor-pointer rounded-sm text-sm text-white bg-closet px-5 py-2 font-semibold">
                   Đặt hàng ngay
-                </button>
+                </button> */}
                 <button
-                  className="cursor-pointer rounded-sm text-sm text-white bg-closet px-5 py-2 font-semibold"
+                  className="cursor-pointer rounded-sm text-sm text-white bg-closet px-5 py-2 font-semibold flex flex-row items-center justify-center gap-3"
                   onClick={handleAddCart}
                 >
+                  Thêm vào giỏ hàng
                   <ShoppingCart size={20} />
                 </button>
               </div>

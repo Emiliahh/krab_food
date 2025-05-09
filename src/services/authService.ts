@@ -1,7 +1,8 @@
 import { LoginRes } from "@/types/loginRes";
 import axios, { AxiosResponse } from "axios";
 import Authapi from "./protectedApi";
-import { User } from "@/types/userType";
+import { RegisterDto, User } from "@/types/userType";
+import { UserManager } from "@/pages/admin/customerPage";
 
 const api = axios.create({
   baseURL: "http://localhost:5114/api/auth",
@@ -65,7 +66,6 @@ const checkAdmin = async () => {
   }
 };
 
-
 const logout = async () => {
   try {
     const response = await Authapi.get("auth/logout", {
@@ -80,29 +80,14 @@ const logout = async () => {
 };
 
 // ➕ Thêm user (đăng ký)
-const register = async (
-  email: string,
-  password: string,
-  fullName: string,
-  phone: string
-) => {
-  try {
-    const response = await api.post("/register", {
-        email,
-        password,
-        fullName,
-        phone,
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error registering user:", error);
-    throw error;
-  }
+const registerUser = async (user: RegisterDto) => {
+  const res = await api.post("/register", user);
+  return res;
 };
 
-const getUsers = async () : Promise<User[]> => {
-    const response = await Authapi.get<User[]>("/User/getuser"); // endpoint API backend
-    return response.data;
+const getUsers = async (): Promise<UserManager[]> => {
+  const response = await Authapi.get<UserManager[]>("/User/getuser"); // endpoint API backend
+  return response.data;
 };
 
 // const deleteUser = async (id: number) => {
@@ -110,4 +95,12 @@ const getUsers = async () : Promise<User[]> => {
 //     return res.data;
 // };
 
-export { login, validate, logout, checkAcess ,checkAdmin , register, getUsers};
+export {
+  login,
+  validate,
+  logout,
+  checkAcess,
+  checkAdmin,
+  getUsers,
+  registerUser,
+};

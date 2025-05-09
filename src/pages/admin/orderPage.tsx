@@ -17,25 +17,32 @@ import { formatCurrency } from "@/util/currencyFormater";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
-import { Link, useSearchParams } from "react-router";
+import { Link, useNavigate, useSearchParams } from "react-router";
 import { toast } from "react-toastify";
 const OrderPage = () => {
   const [selectedStatus, setSelectedStatus] = useState<OrderStatus>(
     OrderStatus.Pending
   );
+
   const [searchParams] = useSearchParams();
   const page = searchParams.get("page") || "1";
-  const { data: product, refetch } = useQuery({
-    queryKey: ["orderList", selectedStatus, page],
-    queryFn: () => getOrder(selectedStatus, Number.parseInt(page), 10),
+  const [fromDate, setFromDate] = useState<Date | undefined>(() => {
+    const date = new Date();
+    date.setDate(date.getDate() - 3);
+    return date;
   });
+  const [toDate, setToDate] = useState<Date | undefined>(new Date(Date.now()));
+  const { data: product, refetch } = useQuery({
+    queryKey: ["orderList", selectedStatus, page, fromDate, toDate],
+    queryFn: () =>
+      getOrder(selectedStatus, Number.parseInt(page), 10, fromDate, toDate),
+  });
+  const navigate = useNavigate();
   const list = usePaginateHook({
     page: Number(page),
     totalPage: product?.totalPage ?? 0,
     range: 2,
   });
-  const [fromDate, setFromDate] = useState<Date>();
-  const [toDate, setToDate] = useState<Date>();
   const handleUpdate = async (id: string, status: number) => {
     try {
       // 1: pending, 2: delivering, 3: delivered, 4: cancel
@@ -67,9 +74,15 @@ const OrderPage = () => {
           />
         </div>
         <label>Từ</label>
-        <DatePickerDemo date={fromDate || new Date()} setDate={setFromDate} />
+        <DatePickerDemo
+          date={fromDate || new Date()}
+          setDate={(date) => setFromDate(date)}
+        />
         <label>Đến</label>
-        <DatePickerDemo date={toDate || new Date()} setDate={setToDate} />
+        <DatePickerDemo
+          date={toDate || new Date()}
+          setDate={(date) => setToDate(date)}
+        />
       </div>
       <div className="flex flex-row gap-2 w-full max-w-6xl items-center">
         {Object.values(OrderStatus)
@@ -79,7 +92,10 @@ const OrderPage = () => {
             return (
               <button
                 key={status}
-                onClick={() => setSelectedStatus(status)}
+                onClick={() => {
+                  setSelectedStatus(status);
+                  navigate(`${window.location.pathname}?page=1`);
+                }}
                 className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
                   selectedStatus === status
                     ? "bg-closet text-white"

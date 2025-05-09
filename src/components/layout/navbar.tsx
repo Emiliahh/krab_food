@@ -14,8 +14,8 @@ const NavBar: React.FC<NavBarProps> = ({ toggle }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { search, setSearch } = useSearchStore();
   const { isAuthenticated, user, logout } = useUserStore();
-  const { cartItems } = useCartStore();
   const navigate = useNavigate();
+  const { cartItems } = useCartStore();
   const toggleFilterBar = () => {
     setIsOpen((prev) => !prev);
   };
@@ -24,12 +24,12 @@ const NavBar: React.FC<NavBarProps> = ({ toggle }) => {
       <div className="flex justify-center items-center py-2 gap-20  max-w-5xl w-full">
         {/* phần logo */}
         <div className="flex flex-row">
-          <img
-            src="src\assets\Screenshot 2025-04-03 004924.png"
-            alt="Logo"
-            className="w-full h-12 cursor-pointer"
+          <div
+            className="flex items-center gap-4 cursor-pointer"
             onClick={() => navigate("/")}
-          />
+          >
+            <h2 className="text-2xl font-bold text-closet">Krab Food</h2>
+          </div>
         </div>
         {/* thanh tìm kiếm */}
         <div className="flex  flex-row items-center flex-1 gap-5 pl-3 pr-1 py-1 rounded-full bg-light-gray border-none  text-gray-700 ">

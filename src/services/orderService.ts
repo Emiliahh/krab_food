@@ -31,7 +31,9 @@ const GetOrdeUser = async (id: number) => {
 const getOrder = async (
   id: number,
   page: number = 1,
-  pageSize: number = 10
+  pageSize: number = 10,
+  from?: Date,
+  to?: Date
 ) => {
   try {
     const response = await Authapi.get<PaginatedResponse<OrderTypes>>(
@@ -41,6 +43,8 @@ const getOrder = async (
           status: id,
           page,
           pageSize,
+          from: from?.toISOString() ?? null,
+          to: to?.toISOString() ?? null,
         },
       }
     );

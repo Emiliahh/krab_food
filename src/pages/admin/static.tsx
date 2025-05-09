@@ -9,116 +9,58 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import Authapi from "@/services/protectedApi";
 
-const mock = [
-  { totalOrder: 3, totalRevenue: 5959000, day: "0001-01-01T00:00:00" },
-  { totalOrder: 1, totalRevenue: 30000, day: "2025-04-15T13:23:37.465023" },
-  { totalOrder: 1, totalRevenue: 1579000, day: "2025-04-15T18:27:20.511944" },
-  { totalOrder: 1, totalRevenue: 12654000, day: "2025-04-17T10:35:59.40853" },
-  { totalOrder: 1, totalRevenue: 3128000, day: "2025-04-17T10:36:10.2063" },
-  { totalOrder: 1, totalRevenue: 3128000, day: "2025-04-17T14:48:05.611224" },
-  { totalOrder: 1, totalRevenue: 10118000, day: "2025-04-18T05:39:17.170435" },
-  { totalOrder: 1, totalRevenue: 964000, day: "2025-04-18T13:33:12.867125" },
-  { totalOrder: 1, totalRevenue: 1178000, day: "2025-04-18T13:45:00.29556" },
-  { totalOrder: 1, totalRevenue: 1249000, day: "2025-04-18T14:05:10.974394" },
-  { totalOrder: 1, totalRevenue: 2000, day: "2025-04-19T18:43:37.702691" },
-  { totalOrder: 1, totalRevenue: 2000, day: "2025-04-20T11:22:20.736885" },
-  { totalOrder: 1, totalRevenue: 4000, day: "2025-04-20T22:46:57.972329" },
-  { totalOrder: 1, totalRevenue: 2000, day: "2025-04-21T04:04:26.43338" },
-  { totalOrder: 1, totalRevenue: 2000, day: "2025-04-21T04:44:11.812812" },
-  { totalOrder: 1, totalRevenue: 10000, day: "2025-04-21T13:05:00.045456" },
-  { totalOrder: 1, totalRevenue: 4000, day: "2025-04-21T14:19:09.174361" },
-  { totalOrder: 74, totalRevenue: 11194000, day: "2025-04-23T05:00:40" },
-];
+interface Revenue {
+  totalOrder: number;
+  totalRevenue: number;
+  day: string;
+}
 
-const mockFood = [
-  {
-    productId: "9e4bae99-349f-4ab1-a3ac-99775c8071c5",
-    productName: "Lẩu siêu cay tứ xuyên",
-    totalSale: 36,
-    revenue: 1144000,
-  },
-  {
-    productId: "6fc62cce-0b56-47e1-b21f-e5fcf6cf0ee3",
-    productName: "Phở bò Nam Định",
-    totalSale: 30,
-    revenue: 132000,
-  },
-  {
-    productId: "5b732e1d-bffc-4821-9ee9-85b96feadead",
-    productName: "Thịt chó rượu mận",
-    totalSale: 19,
-    revenue: 3280000,
-  },
-  {
-    productId: "33c42534-24fa-434c-81c4-97baf4fa329b",
-    productName: "Lẩu bắp bò",
-    totalSale: 14,
-    revenue: 14687000,
-  },
-  {
-    productId: "b82214f5-461a-4267-b6c0-8eadd2c5fb87",
-    productName: "Thịt heo luộc",
-    totalSale: 14,
-    revenue: 304000,
-  },
-  {
-    productId: "27bd81d7-d1f5-4ec6-a840-7c529e6feefd",
-    productName: "Phở bò bát đá",
-    totalSale: 10,
-    revenue: 12004000,
-  },
-  {
-    productId: "7ba2e403-a2a5-467d-9c06-e916226e2344",
-    productName: "Sushi cá hồi",
-    totalSale: 7,
-    revenue: 15292000,
-  },
-  {
-    productId: "bd0d2c8d-0317-4841-b726-a668192f33a2",
-    productName: "Cơm xà xíu",
-    totalSale: 7,
-    revenue: 630000,
-  },
-  {
-    productId: "7b94b47c-a155-43d0-a02c-b8c3cc2c11af",
-    productName: "Ramen",
-    totalSale: 4,
-    revenue: 1249000,
-  },
-  {
-    productId: "f4e26251-89ca-4ebc-a030-374fb5675a56",
-    productName: "Thịt lợn luộc",
-    totalSale: 4,
-    revenue: 156000,
-  },
-  {
-    productId: "a2606ed0-63c9-4400-ae94-ec8661fc805e",
-    productName: "Cơm rang dưa bò",
-    totalSale: 3,
-    revenue: 141000,
-  },
-  {
-    productId: "27bfb215-ddd9-4a55-912f-57a0f8226c27",
-    productName: "Bún thang",
-    totalSale: 1,
-    revenue: 50000,
-  },
-  {
-    productId: "dd2fd316-50a7-470c-bc8e-def4109517e5",
-    productName: "Marcile",
-    totalSale: 1,
-    revenue: 1500000,
-  },
-];
+interface FoodSale {
+  productId: string;
+  productName: string;
+  totalSale: number;
+  revenue: number;
+}
 
-const formatDate = (isoDate: Date) => {
+const formatDate = (isoDate: string) => {
   const d = new Date(isoDate);
   return d.toLocaleDateString("vi-VN").split("/").splice(0, 2).join("/");
 };
 
+const getRevenue = async () => {
+  const res = await Authapi.get<Revenue[]>(
+    `Static/revenue`
+  );
+  return res.data;
+};
+
+const getFoodSale = async () => {
+  const res = await Authapi.get<FoodSale[]>(
+    `Static/product-sale`
+  );
+  return res.data;
+};
+
 const StaticPage = () => {
   const [view, setView] = useState<"revenue" | "food">("revenue");
+
+  const { data: revenueData, isLoading: revenueLoading } = useQuery({
+    queryKey: ["revenue"],
+    queryFn: getRevenue,
+  });
+
+  const { data: foodData, isLoading: foodLoading } = useQuery({
+    queryKey: ["foodSale"],
+    queryFn: getFoodSale,
+    enabled: view === "food", // Only fetch when "food" view is active
+  });
+
+  // Fallback to mock data if API call is loading or fails
+  const displayedRevenueData = revenueData || [];
+  const displayedFoodData = foodData || [];
 
   return (
     <div className="flex flex-col items-center min-h-screen p-4 gap-4">
@@ -141,10 +83,16 @@ const StaticPage = () => {
         </button>
       </div>
 
-      {view === "revenue" ? (
+      {revenueLoading && view === "revenue" && (
+        <div className="flex items-center justify-center h-80">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-closet"></div>
+        </div>
+      )}
+
+      {view === "revenue" && !revenueLoading && (
         <ResponsiveContainer width="95%" height={500}>
           <BarChart
-            data={mock}
+            data={displayedRevenueData}
             margin={{ top: 20, right: 30, left: 20, bottom: 50 }}
           >
             <CartesianGrid strokeDasharray="3 3" />
@@ -171,8 +119,16 @@ const StaticPage = () => {
             <Bar dataKey="totalOrder" fill="#82ca9d" name="Số đơn hàng" />
           </BarChart>
         </ResponsiveContainer>
-      ) : (
-        <div className="overflow-x-auto w-full max-w-5xl">
+      )}
+
+      {foodLoading && view === "food" && (
+        <div className="flex items-center justify-center h-80">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-closet"></div>
+        </div>
+      )}
+
+      {view === "food" && !foodLoading && (
+        <div className="overflow-x-auto w-full p-5">
           <table className="table-auto border-collapse w-full text-center shadow-md rounded-lg overflow-hidden">
             <thead>
               <tr className="bg-closet text-white">
@@ -183,11 +139,10 @@ const StaticPage = () => {
               </tr>
             </thead>
             <tbody>
-              {mockFood.map((item, index) => (
+              {displayedFoodData.map((item, index) => (
                 <tr
                   key={item.productId}
-                  // className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}
-                  className="bg--white"
+                  className="odd:bg-white even:bg-gray-50 hover:bg-gray-100"
                 >
                   <td className="border px-4 py-2">{index + 1}</td>
                   <td className="border px-4 py-2">{item.productName}</td>

@@ -40,7 +40,10 @@ export function DatePickerDemo({ date, setDate }: DatePickerProps) {
         <Calendar
           mode="single"
           selected={date}
-          onSelect={setDate}
+          onSelect={(day) => {
+            setDate(day);
+            console.log(day);
+          }}
           initialFocus
         />
       </PopoverContent>
