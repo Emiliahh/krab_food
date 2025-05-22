@@ -9,16 +9,16 @@ import { useEffect } from "react";
 import * as signalR from "@microsoft/signalr";
 
 const ManagementLayout = () => {
-    const { isLoading, error, refetch } = useQuery({
+    const { isLoading, error } = useQuery({
         queryKey: ["checkAccess"],
         queryFn: () => checkAcess(),
         retry: false,
         refetchOnWindowFocus: true,
         staleTime: 5 * 60 * 1000,
     });
-    useEffect(() => {
-        refetch();
-    }, []);
+    // useEffect(() => {
+    //     refetch().then();
+    // }, []);
     const queryClient = useQueryClient();
     useEffect(() => {
         if (error || isLoading) return;

@@ -11,6 +11,9 @@ const LoginPage: React.FC = () => {
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
     const success = await login(phoneNumber, password);
+    /**
+     * lếu đăng nhập thanh công thì chuyển về trang chủ
+     */
     if (success) {
       toast.success("Đăng nhập thành công!");
       console.log(user);

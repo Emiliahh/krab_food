@@ -1,4 +1,5 @@
 import { OrderDetail } from "@/types/orderTypes";
+import React from "react";
 
 interface CartItemProps {
   item: OrderDetail;

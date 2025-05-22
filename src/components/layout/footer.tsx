@@ -38,20 +38,20 @@ const Footer = () => {
               Krab Food là thương hiệu được thành lập vào năm 2022 với tiêu chí
               đặt chất lượng sản phẩm lên hàng đầu.
             </p>
-            <div className="flex gap-3">
-              <a href="#">
-                <i className="fab fa-facebook-f border p-2 rounded-full"></i>
-              </a>
-              <a href="#">
-                <i className="fab fa-twitter border p-2 rounded-full"></i>
-              </a>
-              <a href="#">
-                <i className="fab fa-linkedin border p-2 rounded-full"></i>
-              </a>
-              <a href="#">
-                <i className="fab fa-whatsapp border p-2 rounded-full"></i>
-              </a>
-            </div>
+            {/*<div className="flex gap-3">*/}
+            {/*  <a href="#">*/}
+            {/*    <i className="fab fa-facebook-f border p-2 rounded-full"></i>*/}
+            {/*  </a>*/}
+            {/*  <a href="#">*/}
+            {/*    <i className="fab fa-twitter border p-2 rounded-full"></i>*/}
+            {/*  </a>*/}
+            {/*  <a href="#">*/}
+            {/*    <i className="fab fa-linkedin border p-2 rounded-full"></i>*/}
+            {/*  </a>*/}
+            {/*  <a href="#">*/}
+            {/*    <i className="fab fa-whatsapp border p-2 rounded-full"></i>*/}
+            {/*  </a>*/}
+            {/*</div>*/}
           </div>
 
           {/* Cột 2 */}

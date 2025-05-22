@@ -56,7 +56,7 @@ const OrderCard: React.FC<OrderCardProps> = ({order}) => {
         const res = await UserCancelOrder(order.id);
         if (res) {
             toast.success("Huỷ đơn hàng thành công");
-            queryClient.invalidateQueries({queryKey: ["orders"]});
+            queryClient.invalidateQueries({queryKey: ["orders"]}).then();
         } else {
             toast.error("Huỷ đơn hàng thất bại");
         }
@@ -93,7 +93,7 @@ const OrderCard: React.FC<OrderCardProps> = ({order}) => {
                     <span>{formatDate(order.orderTime)}</span>
                 </div>
 
-                {order.deliveryTime&& <div className="mb-3 flex justify-between">
+                {order.deliveryTime && <div className="mb-3 flex justify-between">
                     <span className="text-gray-500">Thời gian nhận</span>
                     <span>{formatDate(order.deliveryTime)}</span>
                 </div>}

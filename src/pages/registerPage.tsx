@@ -27,6 +27,7 @@ const RegisterPage: React.FC = () => {
     return "";
   };
 
+
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newPassword = e.target.value;
     setPassword(newPassword);

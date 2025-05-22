@@ -9,15 +9,17 @@ const ProductPage = () => {
   const [selected, setSelected] = useState("");
   const [search, setSearch] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
-
+// lấy danh sách món ăn
   const { data: product, refetch } = useQuery({
     queryKey: ["foodList", search, selected],
     queryFn: () => getFoodList(1, 100, true, search, selected),
   });
+  // danh mục
   const { data: categories } = useQuery({
     queryKey: ["categories"],
     queryFn: () => getCategoryList(),
   });
+
   const categoryDict = useMemo(() => {
     return (
       categories?.reduce<Record<string, string>>((acc, cat) => {

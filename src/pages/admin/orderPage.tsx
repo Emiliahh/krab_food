@@ -1,15 +1,6 @@
 import OrderDetailModal from "@/components/admin/detailModal";
 import OrderStatusModal from "@/components/admin/updateStatusModal";
 import { DatePickerDemo } from "@/components/layout/datePicker";
-// import {
-//   Pagination,
-//   PaginationContent,
-//   PaginationItem,
-//   PaginationPrevious,
-//   PaginationLink,
-//   PaginationEllipsis,
-//   PaginationNext,
-// } from "@/components/ui/pagination";
 import usePaginateHook from "@/hooks/paginateHook";
 import { getOrder, updateOrderStatus } from "@/services/orderService";
 import { OrderStatus, statusLabel } from "@/types/orderTypes";
@@ -28,7 +19,7 @@ const OrderPage = () => {
   const page = searchParams.get("page") || "1";
   const [fromDate, setFromDate] = useState<Date | undefined>(() => {
     const date = new Date();
-    date.setDate(date.getDate() - 3);
+    date.setMonth(date.getMonth() - 3)
     return date;
   });
   const [toDate, setToDate] = useState<Date | undefined>(new Date(Date.now()));
@@ -54,7 +45,7 @@ const OrderPage = () => {
       const res = await updateOrderStatus(id, status);
       if (res) {
         toast.success("Cập nhật trạng thái thành công");
-        refetch();
+        await refetch();
       } else {
         toast.error("Failed to update order status:");
       }

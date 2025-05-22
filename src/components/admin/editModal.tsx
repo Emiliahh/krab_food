@@ -49,7 +49,7 @@ const EditProductDialog = ({
     const res = await upateProduct(data, product.id);
     if (res) {
       toast.success("cập nhập thành công")
-      queryClient.invalidateQueries({queryKey:["foodList"]});
+      await queryClient.invalidateQueries({queryKey: ["foodList"]});
       onClose();
     } else {
       alert("Failed to update product:");

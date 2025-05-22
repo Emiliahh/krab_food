@@ -50,7 +50,7 @@ const CustomerPage = () => {
     try {
       await deleteUser(id);
       alert("Xóa khách hàng thành công!");
-      fetchCustomers();
+      await fetchCustomers();
     } catch (error) {
       console.error("Lỗi khi xóa:", error);
       alert("Xóa thất bại.");
@@ -118,7 +118,7 @@ const CustomerPage = () => {
                   <td className="px-4 py-3">{customer.fullname}</td>
                   <td className="px-4 py-3">{customer.phone}</td>
                   <td className="px-4 py-3">
-                    {customer.isBanned === true ? (
+                    {customer.isBanned ? (
                       <span className="bg-red-400 text-white px-3 py-1 rounded">
                         Bị khóa
                       </span>

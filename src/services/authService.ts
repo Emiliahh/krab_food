@@ -22,7 +22,6 @@ const login = async (
         withCredentials: true,
       }
     );
-    console.log("Login response:", response);
     return response;
   } catch (error) {
     alert("Invalid email or password");
